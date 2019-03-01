@@ -118,9 +118,13 @@ class UsersController extends Controller
         if (! Gate::allows('user_view')) {
             return abort(401);
         }
+        
+        $roles = \App\Role::get()->pluck('title', 'id');
+$invoices = \App\Invoice::where('user_id', $id)->get();$invoices = \App\Invoice::where('pm_id', $id)->get();$invoices = \App\Invoice::where('finance_id', $id)->get();
+
         $user = User::findOrFail($id);
 
-        return view('admin.users.show', compact('user'));
+        return view('admin.users.show', compact('user', 'invoices', 'invoices', 'invoices'));
     }
 
 

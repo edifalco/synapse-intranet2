@@ -24,16 +24,13 @@ class UpdateInvoicesRequest extends FormRequest
     {
         return [
             
+            'due_date' => 'nullable|date_format:'.config('app.date_format'),
             'invoice_subtotal' => 'numeric',
             'invoice_taxes' => 'numeric',
             'invoice_total' => 'numeric',
             'budget_subtotal' => 'numeric',
             'budget_taxes' => 'numeric',
             'budget_total' => 'numeric',
-            'date' => 'nullable|date_format:'.config('app.date_format'),
-            'due_date' => 'nullable|date_format:'.config('app.date_format'),
-            'pm_approval_date' => 'nullable|date_format:H:i:s',
-            'finance_approval_date' => 'nullable|date_format:H:i:s',
         ];
     }
 }
