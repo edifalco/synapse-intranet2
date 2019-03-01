@@ -25,18 +25,6 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('contingency_id', trans('global.invoices.fields.contingency').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('contingency_id', $contingencies, old('contingency_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('contingency_id'))
-                        <p class="help-block">
-                            {{ $errors->first('contingency_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
                     {!! Form::label('expense_type_id', trans('global.invoices.fields.expense-type').'', ['class' => 'control-label']) !!}
                     {!! Form::select('expense_type_id', $expense_types, old('expense_type_id'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
@@ -55,6 +43,18 @@
                     @if($errors->has('meeting_id'))
                         <p class="help-block">
                             {{ $errors->first('meeting_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('contingency_id', trans('global.invoices.fields.contingency').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('contingency_id', $contingencies, old('contingency_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('contingency_id'))
+                        <p class="help-block">
+                            {{ $errors->first('contingency_id') }}
                         </p>
                     @endif
                 </div>

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Add5c792184c3accRelationshipsToBudgetTable extends Migration
+class Add5c794dcf3ea84RelationshipsToBudgetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class Add5c792184c3accRelationshipsToBudgetTable extends Migration
     public function up()
     {
         Schema::table('budgets', function(Blueprint $table) {
-            if (!Schema::hasColumn('budgets', 'project_id')) {
-                $table->integer('project_id')->unsigned()->nullable();
-                $table->foreign('project_id', '272448_5c7913942b0a7')->references('id')->on('projects')->onDelete('cascade');
+            if (!Schema::hasColumn('budgets', 'projects_id')) {
+                $table->integer('projects_id')->unsigned()->nullable();
+                $table->foreign('projects_id', '272567_5c794cf724288')->references('id')->on('projects')->onDelete('cascade');
                 }
                 if (!Schema::hasColumn('budgets', 'category_id')) {
                 $table->integer('category_id')->unsigned()->nullable();
-                $table->foreign('category_id', '272448_5c7913944123f')->references('id')->on('categories')->onDelete('cascade');
+                $table->foreign('category_id', '272567_5c794cf74739e')->references('id')->on('categories')->onDelete('cascade');
                 }
                 if (!Schema::hasColumn('budgets', 'year_id')) {
                 $table->integer('year_id')->unsigned()->nullable();
-                $table->foreign('year_id', '272448_5c7913945923a')->references('id')->on('years')->onDelete('cascade');
+                $table->foreign('year_id', '272567_5c794cf76fbd9')->references('id')->on('years')->onDelete('cascade');
                 }
                 
         });
@@ -37,19 +37,19 @@ class Add5c792184c3accRelationshipsToBudgetTable extends Migration
     public function down()
     {
         Schema::table('budgets', function(Blueprint $table) {
-            if(Schema::hasColumn('budgets', 'project_id')) {
-                $table->dropForeign('272448_5c7913942b0a7');
-                $table->dropIndex('272448_5c7913942b0a7');
-                $table->dropColumn('project_id');
+            if(Schema::hasColumn('budgets', 'projects_id')) {
+                $table->dropForeign('272567_5c794cf724288');
+                $table->dropIndex('272567_5c794cf724288');
+                $table->dropColumn('projects_id');
             }
             if(Schema::hasColumn('budgets', 'category_id')) {
-                $table->dropForeign('272448_5c7913944123f');
-                $table->dropIndex('272448_5c7913944123f');
+                $table->dropForeign('272567_5c794cf74739e');
+                $table->dropIndex('272567_5c794cf74739e');
                 $table->dropColumn('category_id');
             }
             if(Schema::hasColumn('budgets', 'year_id')) {
-                $table->dropForeign('272448_5c7913945923a');
-                $table->dropIndex('272448_5c7913945923a');
+                $table->dropForeign('272567_5c794cf76fbd9');
+                $table->dropIndex('272567_5c794cf76fbd9');
                 $table->dropColumn('year_id');
             }
             

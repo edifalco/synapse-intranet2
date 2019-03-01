@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCombined1551438768BudgetsTable extends Migration
+class CreateCombined1551453428BudgetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +18,9 @@ class CreateCombined1551438768BudgetsTable extends Migration
                 $table->double('amount', 15, 2)->nullable();
                 
                 $table->timestamps();
-                
+                $table->softDeletes();
+
+                $table->index(['deleted_at']);
             });
         }
     }

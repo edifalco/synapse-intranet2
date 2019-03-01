@@ -51,15 +51,15 @@ class InvoicesController extends Controller
         
         $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $projects = \App\Project::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $expense_types = \App\ExpenseType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $meetings = \App\Meeting::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $providers = \App\Provider::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $service_types = \App\ServiceType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $pms = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $finances = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
-        return view('admin.invoices.create', compact('users', 'projects', 'contingencies', 'expense_types', 'meetings', 'providers', 'service_types', 'pms', 'finances'));
+        return view('admin.invoices.create', compact('users', 'projects', 'expense_types', 'meetings', 'contingencies', 'providers', 'service_types', 'pms', 'finances'));
     }
 
     /**
@@ -103,9 +103,9 @@ class InvoicesController extends Controller
         
         $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $projects = \App\Project::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $expense_types = \App\ExpenseType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $meetings = \App\Meeting::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $providers = \App\Provider::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $service_types = \App\ServiceType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $pms = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
@@ -113,7 +113,7 @@ class InvoicesController extends Controller
 
         $invoice = Invoice::findOrFail($id);
 
-        return view('admin.invoices.edit', compact('invoice', 'users', 'projects', 'contingencies', 'expense_types', 'meetings', 'providers', 'service_types', 'pms', 'finances'));
+        return view('admin.invoices.edit', compact('invoice', 'users', 'projects', 'expense_types', 'meetings', 'contingencies', 'providers', 'service_types', 'pms', 'finances'));
     }
 
     /**

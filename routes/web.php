@@ -31,14 +31,14 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('meetings_mass_destroy', ['uses' => 'Admin\MeetingsController@massDestroy', 'as' => 'meetings.mass_destroy']);
     Route::post('meetings_restore/{id}', ['uses' => 'Admin\MeetingsController@restore', 'as' => 'meetings.restore']);
     Route::delete('meetings_perma_del/{id}', ['uses' => 'Admin\MeetingsController@perma_del', 'as' => 'meetings.perma_del']);
+    Route::resource('budgets', 'Admin\BudgetsController');
+    Route::post('budgets_mass_destroy', ['uses' => 'Admin\BudgetsController@massDestroy', 'as' => 'budgets.mass_destroy']);
+    Route::post('budgets_restore/{id}', ['uses' => 'Admin\BudgetsController@restore', 'as' => 'budgets.restore']);
+    Route::delete('budgets_perma_del/{id}', ['uses' => 'Admin\BudgetsController@perma_del', 'as' => 'budgets.perma_del']);
     Route::resource('providers', 'Admin\ProvidersController');
     Route::post('providers_mass_destroy', ['uses' => 'Admin\ProvidersController@massDestroy', 'as' => 'providers.mass_destroy']);
     Route::post('providers_restore/{id}', ['uses' => 'Admin\ProvidersController@restore', 'as' => 'providers.restore']);
     Route::delete('providers_perma_del/{id}', ['uses' => 'Admin\ProvidersController@perma_del', 'as' => 'providers.perma_del']);
-    Route::resource('media', 'Admin\MediaController');
-    Route::post('media_mass_destroy', ['uses' => 'Admin\MediaController@massDestroy', 'as' => 'media.mass_destroy']);
-    Route::resource('budgets', 'Admin\BudgetsController');
-    Route::post('budgets_mass_destroy', ['uses' => 'Admin\BudgetsController@massDestroy', 'as' => 'budgets.mass_destroy']);
     Route::resource('categories', 'Admin\CategoriesController');
     Route::post('categories_mass_destroy', ['uses' => 'Admin\CategoriesController@massDestroy', 'as' => 'categories.mass_destroy']);
     Route::post('categories_restore/{id}', ['uses' => 'Admin\CategoriesController@restore', 'as' => 'categories.restore']);

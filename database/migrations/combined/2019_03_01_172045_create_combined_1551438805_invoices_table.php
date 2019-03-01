@@ -17,12 +17,12 @@ class CreateCombined1551438805InvoicesTable extends Migration
                 $table->increments('id');
                 $table->date('date')->nullable();
                 $table->date('due_date')->nullable();
-                $table->double('invoice_subtotal', 15, 2)->nullable();
-                $table->double('invoice_taxes', 15, 2)->nullable();
-                $table->double('invoice_total', 15, 2)->nullable();
-                $table->double('budget_subtotal', 15, 2)->nullable();
-                $table->double('budget_taxes', 15, 2)->nullable();
-                $table->double('budget_total', 15, 2)->nullable();
+                $table->decimal('invoice_subtotal', 15, 2)->nullable();
+                $table->decimal('invoice_taxes', 15, 2)->nullable();
+                $table->decimal('invoice_total', 15, 2)->nullable();
+                $table->decimal('budget_subtotal', 15, 2)->nullable();
+                $table->decimal('budget_taxes', 15, 2)->nullable();
+                $table->decimal('budget_total', 15, 2)->nullable();
                 $table->string('service')->nullable();
                 $table->string('selection_criteria')->nullable();
                 $table->time('pm_approval_date')->nullable();
