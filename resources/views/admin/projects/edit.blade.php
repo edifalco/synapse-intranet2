@@ -3,7 +3,7 @@
 @section('content')
     <h3 class="page-title">@lang('global.projects.title')</h3>
     
-    {!! Form::model($project, ['method' => 'PUT', 'route' => ['admin.projects.update', $project->id]]) !!}
+    {!! Form::model($project, ['method' => 'PUT', 'route' => ['admin.projects.update', $project->id], 'files' => true,]) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -49,14 +49,14 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
+                    @if ($project->logo)
+                        <a href="{{ asset(env('UPLOAD_PATH').'/'.$project->logo) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/'.$project->logo) }}"></a>
+                    @endif
                     {!! Form::label('logo', trans('global.projects.fields.logo').'', ['class' => 'control-label']) !!}
-                    <button type="button" class="btn btn-primary btn-xs" id="selectbtn-logo">
-                        {{ trans('global.app_select_all') }}
-                    </button>
-                    <button type="button" class="btn btn-primary btn-xs" id="deselectbtn-logo">
-                        {{ trans('global.app_deselect_all') }}
-                    </button>
-                    {!! Form::select('logo[]', $logos, old('logo') ? old('logo') : $project->logo->pluck('id')->toArray(), ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'selectall-logo' ]) !!}
+                    {!! Form::file('logo', ['class' => 'form-control', 'style' => 'margin-top: 4px;']) !!}
+                    {!! Form::hidden('logo_max_size', 2) !!}
+                    {!! Form::hidden('logo_max_width', 4096) !!}
+                    {!! Form::hidden('logo_max_height', 4096) !!}
                     <p class="help-block"></p>
                     @if($errors->has('logo'))
                         <p class="help-block">
@@ -104,14 +104,4 @@
         });
     </script>
             
-    <script>
-        $("#selectbtn-logo").click(function(){
-            $("#selectall-logo > option").prop("selected","selected");
-            $("#selectall-logo").trigger("change");
-        });
-        $("#deselectbtn-logo").click(function(){
-            $("#selectall-logo > option").prop("selected","");
-            $("#selectall-logo").trigger("change");
-        });
-    </script>
 @stop

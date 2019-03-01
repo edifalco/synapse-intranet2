@@ -2,19 +2,22 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Budget
  *
  * @package App
  * @property double $amount
- * @property string $project
+ * @property string $projects
  * @property string $category
  * @property string $year
 */
 class Budget extends Model
 {
-    protected $fillable = ['amount', 'project_id', 'category_id', 'year_id'];
+    use SoftDeletes;
+
+    protected $fillable = ['amount', 'projects_id', 'category_id', 'year_id'];
     protected $hidden = [];
     
     
@@ -36,9 +39,9 @@ class Budget extends Model
      * Set to null if empty
      * @param $input
      */
-    public function setProjectIdAttribute($input)
+    public function setProjectsIdAttribute($input)
     {
-        $this->attributes['project_id'] = $input ? $input : null;
+        $this->attributes['projects_id'] = $input ? $input : null;
     }
 
     /**
@@ -59,9 +62,9 @@ class Budget extends Model
         $this->attributes['year_id'] = $input ? $input : null;
     }
     
-    public function project()
+    public function projects()
     {
-        return $this->belongsTo(Project::class, 'project_id')->withTrashed();
+        return $this->belongsTo(Project::class, 'projects_id')->withTrashed();
     }
     
     public function category()

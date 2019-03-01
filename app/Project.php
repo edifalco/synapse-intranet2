@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string $start_date
  * @property string $end_date
+ * @property string $logo
  * @property string $status
 */
 class Project extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'start_date', 'end_date', 'status_id'];
+    protected $fillable = ['name', 'start_date', 'end_date', 'logo', 'status_id'];
     protected $hidden = [];
     
     
@@ -90,11 +91,6 @@ class Project extends Model
     public function setStatusIdAttribute($input)
     {
         $this->attributes['status_id'] = $input ? $input : null;
-    }
-    
-    public function logo()
-    {
-        return $this->belongsToMany(Medium::class, 'medium_project');
     }
     
     public function status()

@@ -25,12 +25,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('project_id', trans('global.budgets.fields.project').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('project_id', $projects, old('project_id'), ['class' => 'form-control select2']) !!}
+                    {!! Form::label('projects_id', trans('global.budgets.fields.projects').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('projects_id', $projects, old('projects_id'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('project_id'))
+                    @if($errors->has('projects_id'))
                         <p class="help-block">
-                            {{ $errors->first('project_id') }}
+                            {{ $errors->first('projects_id') }}
                         </p>
                     @endif
                 </div>

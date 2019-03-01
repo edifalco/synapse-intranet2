@@ -13,17 +13,17 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @package App
  * @property string $user
  * @property string $project
- * @property string $contingency
  * @property string $expense_type
  * @property string $meeting
+ * @property string $contingency
  * @property string $date
  * @property string $due_date
- * @property double $invoice_subtotal
- * @property double $invoice_taxes
- * @property double $invoice_total
- * @property double $budget_subtotal
- * @property double $budget_taxes
- * @property double $budget_total
+ * @property decimal $invoice_subtotal
+ * @property decimal $invoice_taxes
+ * @property decimal $invoice_total
+ * @property decimal $budget_subtotal
+ * @property decimal $budget_taxes
+ * @property decimal $budget_total
  * @property string $provider
  * @property string $service_type
  * @property string $service
@@ -37,7 +37,7 @@ class Invoice extends Model implements HasMedia
 {
     use SoftDeletes, HasMediaTrait;
 
-    protected $fillable = ['date', 'due_date', 'invoice_subtotal', 'invoice_taxes', 'invoice_total', 'budget_subtotal', 'budget_taxes', 'budget_total', 'service', 'selection_criteria', 'pm_approval_date', 'finance_approval_date', 'user_id', 'project_id', 'contingency_id', 'expense_type_id', 'meeting_id', 'provider_id', 'service_type_id', 'pm_id', 'finance_id'];
+    protected $fillable = ['date', 'due_date', 'invoice_subtotal', 'invoice_taxes', 'invoice_total', 'budget_subtotal', 'budget_taxes', 'budget_total', 'service', 'selection_criteria', 'pm_approval_date', 'finance_approval_date', 'user_id', 'project_id', 'expense_type_id', 'meeting_id', 'contingency_id', 'provider_id', 'service_type_id', 'pm_id', 'finance_id'];
     protected $hidden = [];
     
     
@@ -64,15 +64,6 @@ class Invoice extends Model implements HasMedia
      * Set to null if empty
      * @param $input
      */
-    public function setContingencyIdAttribute($input)
-    {
-        $this->attributes['contingency_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
     public function setExpenseTypeIdAttribute($input)
     {
         $this->attributes['expense_type_id'] = $input ? $input : null;
@@ -85,6 +76,15 @@ class Invoice extends Model implements HasMedia
     public function setMeetingIdAttribute($input)
     {
         $this->attributes['meeting_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setContingencyIdAttribute($input)
+    {
+        $this->attributes['contingency_id'] = $input ? $input : null;
     }
 
     /**
@@ -148,81 +148,57 @@ class Invoice extends Model implements HasMedia
     }
 
     /**
-     * Set attribute to date format
+     * Set attribute to money format
      * @param $input
      */
     public function setInvoiceSubtotalAttribute($input)
     {
-        if ($input != '') {
-            $this->attributes['invoice_subtotal'] = $input;
-        } else {
-            $this->attributes['invoice_subtotal'] = null;
-        }
+        $this->attributes['invoice_subtotal'] = $input ? $input : null;
     }
 
     /**
-     * Set attribute to date format
+     * Set attribute to money format
      * @param $input
      */
     public function setInvoiceTaxesAttribute($input)
     {
-        if ($input != '') {
-            $this->attributes['invoice_taxes'] = $input;
-        } else {
-            $this->attributes['invoice_taxes'] = null;
-        }
+        $this->attributes['invoice_taxes'] = $input ? $input : null;
     }
 
     /**
-     * Set attribute to date format
+     * Set attribute to money format
      * @param $input
      */
     public function setInvoiceTotalAttribute($input)
     {
-        if ($input != '') {
-            $this->attributes['invoice_total'] = $input;
-        } else {
-            $this->attributes['invoice_total'] = null;
-        }
+        $this->attributes['invoice_total'] = $input ? $input : null;
     }
 
     /**
-     * Set attribute to date format
+     * Set attribute to money format
      * @param $input
      */
     public function setBudgetSubtotalAttribute($input)
     {
-        if ($input != '') {
-            $this->attributes['budget_subtotal'] = $input;
-        } else {
-            $this->attributes['budget_subtotal'] = null;
-        }
+        $this->attributes['budget_subtotal'] = $input ? $input : null;
     }
 
     /**
-     * Set attribute to date format
+     * Set attribute to money format
      * @param $input
      */
     public function setBudgetTaxesAttribute($input)
     {
-        if ($input != '') {
-            $this->attributes['budget_taxes'] = $input;
-        } else {
-            $this->attributes['budget_taxes'] = null;
-        }
+        $this->attributes['budget_taxes'] = $input ? $input : null;
     }
 
     /**
-     * Set attribute to date format
+     * Set attribute to money format
      * @param $input
      */
     public function setBudgetTotalAttribute($input)
     {
-        if ($input != '') {
-            $this->attributes['budget_total'] = $input;
-        } else {
-            $this->attributes['budget_total'] = null;
-        }
+        $this->attributes['budget_total'] = $input ? $input : null;
     }
 
     /**
@@ -327,11 +303,6 @@ class Invoice extends Model implements HasMedia
         return $this->belongsTo(Project::class, 'project_id')->withTrashed();
     }
     
-    public function contingency()
-    {
-        return $this->belongsTo(Contingency::class, 'contingency_id')->withTrashed();
-    }
-    
     public function expense_type()
     {
         return $this->belongsTo(ExpenseType::class, 'expense_type_id')->withTrashed();
@@ -340,6 +311,11 @@ class Invoice extends Model implements HasMedia
     public function meeting()
     {
         return $this->belongsTo(Meeting::class, 'meeting_id')->withTrashed();
+    }
+    
+    public function contingency()
+    {
+        return $this->belongsTo(Contingency::class, 'contingency_id')->withTrashed();
     }
     
     public function provider()

@@ -5,12 +5,12 @@ return [
 		'permissions' => [		'title' => 'Permissions',		'fields' => [			'title' => 'Title',		],	],
 		'roles' => [		'title' => 'Roles',		'fields' => [			'title' => 'Title',			'permission' => 'Permissions',		],	],
 		'users' => [		'title' => 'Users',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'password' => 'Password',			'role' => 'Role',			'remember-token' => 'Remember token',		],	],
-		'budgets' => [		'title' => 'Budgets',		'fields' => [			'amount' => 'Amount',			'project' => 'Project',			'category' => 'Category',			'year' => 'Year',		],	],
+		'budgets' => [		'title' => 'Budgets',		'fields' => [		],	],
 		'categories' => [		'title' => 'Categories',		'fields' => [			'name' => 'Name',		],	],
 		'contingencies' => [		'title' => 'Contingencies',		'fields' => [			'name' => 'Name',		],	],
 		'expense-types' => [		'title' => 'Expense types',		'fields' => [			'name' => 'Name',		],	],
-		'invoices' => [		'title' => 'Invoices',		'fields' => [			'user' => 'Requester',			'project' => 'Project',			'contingency' => 'Contingency',			'expense-type' => 'Expense type',			'meeting' => 'Meeting',			'date' => 'Date',			'due-date' => 'Due date',			'invoice-subtotal' => 'Invoice subtotal',			'invoice-taxes' => 'Invoice taxes',			'invoice-total' => 'Invoice total',			'budget-subtotal' => 'Budget subtotal',			'budget-taxes' => 'Budget taxes',			'budget-total' => 'Budget total',			'provider' => 'Provider',			'service-type' => 'Service type',			'service' => 'Service',			'selection-criteria' => 'Selection criteria',			'pm' => 'PM',			'pm-approval-date' => 'PM approval date',			'finance' => 'Finance Resposible',			'finance-approval-date' => 'Finance approval date',			'files' => 'Files',		],	],
-		'media' => [		'title' => 'Media',		'fields' => [			'model-type' => 'Model type',			'model-id' => 'Model',			'collection-name' => 'Collection name',			'name' => 'Name',			'file-name' => 'File name',			'disk' => 'Disk',			'mime-type' => 'Mime type',			'size' => 'Size',			'manipulations' => 'Manipulations',			'custom-properties' => 'Custom properties',			'responsive-images' => 'Responsive images',			'order-column' => 'Order column',		],	],
+		'invoices' => [		'title' => 'Invoices',		'fields' => [			'user' => 'Requester',			'project' => 'Project',			'expense-type' => 'Expense type',			'meeting' => 'Meeting',			'contingency' => 'Contingency',			'date' => 'Date',			'due-date' => 'Due date',			'invoice-subtotal' => 'Invoice subtotal',			'invoice-taxes' => 'Invoice taxes',			'invoice-total' => 'Invoice total',			'budget-subtotal' => 'Budget subtotal',			'budget-taxes' => 'Budget taxes',			'budget-total' => 'Budget total',			'provider' => 'Provider',			'service-type' => 'Service type',			'service' => 'Service',			'selection-criteria' => 'Selection criteria',			'pm' => 'PM',			'pm-approval-date' => 'PM approval date',			'finance' => 'Finance resposible',			'finance-approval-date' => 'Finance approval date',			'files' => 'Files',		],	],
+		'media' => [		'title' => 'Media',		'fields' => [		],	],
 		'meetings' => [		'title' => 'Meetings',		'fields' => [			'name' => 'Name',			'city' => 'City',			'start-date' => 'Start date',			'end-date' => 'End date',			'project' => 'Project',			'status' => 'Status',		],	],
 		'messages' => [		'title' => 'Messages',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'phone' => 'Phone',			'message' => 'Message',		],	],
 		'projects' => [		'title' => 'Projects',		'fields' => [			'name' => 'Name',			'start-date' => 'Start date',			'end-date' => 'End date',			'logo' => 'Logo',			'status' => 'Status',		],	],
@@ -19,6 +19,7 @@ return [
 		'statuses' => [		'title' => 'Statuses',		'fields' => [			'name' => 'Name',		],	],
 		'years' => [		'title' => 'Years',		'fields' => [			'name' => 'Name',		],	],
 		'invoice-management' => [		'title' => 'Invoice management',		'fields' => [		],	],
+		'budgets' => [		'title' => 'Budgets',		'fields' => [			'amount' => 'Amount',			'projects' => 'Projects',			'category' => 'Category',			'year' => 'Year',		],	],
 	'app_create' => 'Create',
 	'app_save' => 'Save',
 	'app_edit' => 'Edit',

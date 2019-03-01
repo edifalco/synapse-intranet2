@@ -25,7 +25,7 @@ class StoreProjectsRequest extends FormRequest
         return [
             'start_date' => 'nullable|date_format:'.config('app.date_format'),
             'end_date' => 'nullable|date_format:'.config('app.date_format'),
-            'logo.*' => 'exists:media,id',
+            'logo' => 'nullable|mimes:png,jpg,jpeg,gif',
         ];
     }
 }

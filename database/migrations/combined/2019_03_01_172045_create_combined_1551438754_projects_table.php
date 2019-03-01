@@ -18,6 +18,7 @@ class CreateCombined1551438754ProjectsTable extends Migration
                 $table->string('name');
                 $table->date('start_date')->nullable();
                 $table->date('end_date')->nullable();
+                $table->string('logo')->nullable();
                 
                 $table->timestamps();
                 $table->softDeletes();

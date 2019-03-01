@@ -26,11 +26,7 @@
                         </tr>
                         <tr>
                             <th>@lang('global.projects.fields.logo')</th>
-                            <td field-key='logo'>
-                                @foreach ($project->logo as $singleLogo)
-                                    <span class="label label-info label-many">{{ $singleLogo->responsive_images }}</span>
-                                @endforeach
-                            </td>
+                            <td field-key='logo'>@if($project->logo)<a href="{{ asset(env('UPLOAD_PATH').'/' . $project->logo) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $project->logo) }}"/></a>@endif</td>
                         </tr>
                         <tr>
                             <th>@lang('global.projects.fields.status')</th>
@@ -41,75 +37,25 @@
             </div><!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     
-<li role="presentation" class="active"><a href="#budgets" aria-controls="budgets" role="tab" data-toggle="tab">Budgets</a></li>
-<li role="presentation" class=""><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
+<li role="presentation" class="active"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
+<li role="presentation" class=""><a href="#budgets" aria-controls="budgets" role="tab" data-toggle="tab">Budgets</a></li>
 <li role="presentation" class=""><a href="#meetings" aria-controls="meetings" role="tab" data-toggle="tab">Meetings</a></li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
     
-<div role="tabpanel" class="tab-pane active" id="budgets">
-<table class="table table-bordered table-striped {{ count($budgets) > 0 ? 'datatable' : '' }}">
-    <thead>
-        <tr>
-            <th>@lang('global.budgets.fields.amount')</th>
-                        <th>@lang('global.budgets.fields.project')</th>
-                        <th>@lang('global.budgets.fields.category')</th>
-                        <th>@lang('global.budgets.fields.year')</th>
-                                                <th>&nbsp;</th>
-
-        </tr>
-    </thead>
-
-    <tbody>
-        @if (count($budgets) > 0)
-            @foreach ($budgets as $budget)
-                <tr data-entry-id="{{ $budget->id }}">
-                    <td field-key='amount'>{{ $budget->amount }}</td>
-                                <td field-key='project'>{{ $budget->project->name ?? '' }}</td>
-                                <td field-key='category'>{{ $budget->category->name ?? '' }}</td>
-                                <td field-key='year'>{{ $budget->year->name ?? '' }}</td>
-                                                                <td>
-                                    @can('budget_view')
-                                    <a href="{{ route('admin.budgets.show',[$budget->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
-                                    @endcan
-                                    @can('budget_edit')
-                                    <a href="{{ route('admin.budgets.edit',[$budget->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
-                                    @endcan
-                                    @can('budget_delete')
-{!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'DELETE',
-                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.budgets.destroy', $budget->id])) !!}
-                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                </td>
-
-                </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="9">@lang('global.app_no_entries_in_table')</td>
-            </tr>
-        @endif
-    </tbody>
-</table>
-</div>
-<div role="tabpanel" class="tab-pane " id="invoices">
+<div role="tabpanel" class="tab-pane active" id="invoices">
 <table class="table table-bordered table-striped {{ count($invoices) > 0 ? 'datatable' : '' }}">
     <thead>
         <tr>
             <th>@lang('global.invoices.fields.user')</th>
                         <th>@lang('global.invoices.fields.project')</th>
-                        <th>@lang('global.invoices.fields.contingency')</th>
                         <th>@lang('global.invoices.fields.expense-type')</th>
                         <th>@lang('global.invoices.fields.meeting')</th>
+                        <th>@lang('global.invoices.fields.contingency')</th>
                         <th>@lang('global.invoices.fields.date')</th>
                         <th>@lang('global.invoices.fields.due-date')</th>
-                        <th>@lang('global.invoices.fields.invoice-subtotal')</th>
                         <th>@lang('global.invoices.fields.provider')</th>
                         <th>@lang('global.invoices.fields.pm')</th>
                         <th>@lang('global.invoices.fields.pm-approval-date')</th>
@@ -129,12 +75,11 @@
                 <tr data-entry-id="{{ $invoice->id }}">
                     <td field-key='user'>{{ $invoice->user->name ?? '' }}</td>
                                 <td field-key='project'>{{ $invoice->project->name ?? '' }}</td>
-                                <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
                                 <td field-key='expense_type'>{{ $invoice->expense_type->name ?? '' }}</td>
                                 <td field-key='meeting'>{{ $invoice->meeting->name ?? '' }}</td>
+                                <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
                                 <td field-key='date'>{{ $invoice->date }}</td>
                                 <td field-key='due_date'>{{ $invoice->due_date }}</td>
-                                <td field-key='invoice_subtotal'>{{ $invoice->invoice_subtotal }}</td>
                                 <td field-key='provider'>{{ $invoice->provider->name ?? '' }}</td>
                                 <td field-key='pm'>{{ $invoice->pm->name ?? '' }}</td>
                                 <td field-key='pm_approval_date'>{{ $invoice->pm_approval_date }}</td>
@@ -181,6 +126,76 @@
         @else
             <tr>
                 <td colspan="27">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="budgets">
+<table class="table table-bordered table-striped {{ count($budgets) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.budgets.fields.amount')</th>
+                        <th>@lang('global.budgets.fields.projects')</th>
+                        <th>@lang('global.budgets.fields.category')</th>
+                        <th>@lang('global.budgets.fields.year')</th>
+                        @if( request('show_deleted') == 1 )
+                        <th>&nbsp;</th>
+                        @else
+                        <th>&nbsp;</th>
+                        @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($budgets) > 0)
+            @foreach ($budgets as $budget)
+                <tr data-entry-id="{{ $budget->id }}">
+                    <td field-key='amount'>{{ $budget->amount }}</td>
+                                <td field-key='projects'>{{ $budget->projects->name ?? '' }}</td>
+                                <td field-key='category'>{{ $budget->category->name ?? '' }}</td>
+                                <td field-key='year'>{{ $budget->year->name ?? '' }}</td>
+                                @if( request('show_deleted') == 1 )
+                                <td>
+                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'POST',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.budgets.restore', $budget->id])) !!}
+                                    {!! Form::submit(trans('global.app_restore'), array('class' => 'btn btn-xs btn-success')) !!}
+                                    {!! Form::close() !!}
+                                                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.budgets.perma_del', $budget->id])) !!}
+                                    {!! Form::submit(trans('global.app_permadel'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                                                </td>
+                                @else
+                                <td>
+                                    @can('budget_view')
+                                    <a href="{{ route('admin.budgets.show',[$budget->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('budget_edit')
+                                    <a href="{{ route('admin.budgets.edit',[$budget->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('budget_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.budgets.destroy', $budget->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+                                @endif
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="9">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
