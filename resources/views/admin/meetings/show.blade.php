@@ -53,12 +53,11 @@
         <tr>
             <th>@lang('global.invoices.fields.user')</th>
                         <th>@lang('global.invoices.fields.project')</th>
-                        <th>@lang('global.invoices.fields.contingency')</th>
                         <th>@lang('global.invoices.fields.expense-type')</th>
                         <th>@lang('global.invoices.fields.meeting')</th>
+                        <th>@lang('global.invoices.fields.contingency')</th>
                         <th>@lang('global.invoices.fields.date')</th>
                         <th>@lang('global.invoices.fields.due-date')</th>
-                        <th>@lang('global.invoices.fields.invoice-subtotal')</th>
                         <th>@lang('global.invoices.fields.provider')</th>
                         <th>@lang('global.invoices.fields.pm')</th>
                         <th>@lang('global.invoices.fields.pm-approval-date')</th>
@@ -78,12 +77,11 @@
                 <tr data-entry-id="{{ $invoice->id }}">
                     <td field-key='user'>{{ $invoice->user->name ?? '' }}</td>
                                 <td field-key='project'>{{ $invoice->project->name ?? '' }}</td>
-                                <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
                                 <td field-key='expense_type'>{{ $invoice->expense_type->name ?? '' }}</td>
                                 <td field-key='meeting'>{{ $invoice->meeting->name ?? '' }}</td>
+                                <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
                                 <td field-key='date'>{{ $invoice->date }}</td>
                                 <td field-key='due_date'>{{ $invoice->due_date }}</td>
-                                <td field-key='invoice_subtotal'>{{ $invoice->invoice_subtotal }}</td>
                                 <td field-key='provider'>{{ $invoice->provider->name ?? '' }}</td>
                                 <td field-key='pm'>{{ $invoice->pm->name ?? '' }}</td>
                                 <td field-key='pm_approval_date'>{{ $invoice->pm_approval_date }}</td>

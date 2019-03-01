@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCombined1551438748MediaTable extends Migration
+class Drop5c79488009053MediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -11,6 +11,16 @@ class CreateCombined1551438748MediaTable extends Migration
      * @return void
      */
     public function up()
+    {
+        Schema::dropIfExists('media');
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
         if(! Schema::hasTable('media')) {
             Schema::create('media', function (Blueprint $table) {
@@ -32,15 +42,5 @@ class CreateCombined1551438748MediaTable extends Migration
                 
             });
         }
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('media');
     }
 }

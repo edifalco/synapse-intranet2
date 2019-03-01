@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProjectsRequest;
 use App\Http\Requests\Admin\UpdateProjectsRequest;
+use App\Http\Controllers\Traits\FileUploadTrait;
 
 class ProjectsController extends Controller
 {
+    use FileUploadTrait;
+
     /**
      * Display a listing of Project.
      *
@@ -46,11 +49,9 @@ class ProjectsController extends Controller
             return abort(401);
         }
         
-        $logos = \App\Medium::get()->pluck('responsive_images', 'id');
-
         $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
-        return view('admin.projects.create', compact('logos', 'statuses'));
+        return view('admin.projects.create', compact('statuses'));
     }
 
     /**
@@ -64,8 +65,8 @@ class ProjectsController extends Controller
         if (! Gate::allows('project_create')) {
             return abort(401);
         }
+        $request = $this->saveFiles($request);
         $project = Project::create($request->all());
-        $project->logo()->sync(array_filter((array)$request->input('logo')));
 
 
 
@@ -85,13 +86,11 @@ class ProjectsController extends Controller
             return abort(401);
         }
         
-        $logos = \App\Medium::get()->pluck('responsive_images', 'id');
-
         $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
         $project = Project::findOrFail($id);
 
-        return view('admin.projects.edit', compact('project', 'logos', 'statuses'));
+        return view('admin.projects.edit', compact('project', 'statuses'));
     }
 
     /**
@@ -106,9 +105,9 @@ class ProjectsController extends Controller
         if (! Gate::allows('project_edit')) {
             return abort(401);
         }
+        $request = $this->saveFiles($request);
         $project = Project::findOrFail($id);
         $project->update($request->all());
-        $project->logo()->sync(array_filter((array)$request->input('logo')));
 
 
 
@@ -128,13 +127,11 @@ class ProjectsController extends Controller
             return abort(401);
         }
         
-        $logos = \App\Medium::get()->pluck('responsive_images', 'id');
-
-        $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$budgets = \App\Budget::where('project_id', $id)->get();$invoices = \App\Invoice::where('project_id', $id)->get();$meetings = \App\Meeting::where('project_id', $id)->get();
+        $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$invoices = \App\Invoice::where('project_id', $id)->get();$budgets = \App\Budget::where('projects_id', $id)->get();$meetings = \App\Meeting::where('project_id', $id)->get();
 
         $project = Project::findOrFail($id);
 
-        return view('admin.projects.show', compact('project', 'budgets', 'invoices', 'meetings'));
+        return view('admin.projects.show', compact('project', 'invoices', 'budgets', 'meetings'));
     }
 
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Add5c79218451819RelationshipsToProjectTable extends Migration
+class Add5c7949054142eRelationshipsToProjectTable extends Migration
 {
     /**
      * Run the migrations.
@@ -29,11 +29,6 @@ class Add5c79218451819RelationshipsToProjectTable extends Migration
     public function down()
     {
         Schema::table('projects', function(Blueprint $table) {
-            if(Schema::hasColumn('projects', 'status_id')) {
-                $table->dropForeign('272456_5c7913968f267');
-                $table->dropIndex('272456_5c7913968f267');
-                $table->dropColumn('status_id');
-            }
             
         });
     }

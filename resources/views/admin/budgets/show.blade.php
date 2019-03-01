@@ -17,8 +17,8 @@
                             <td field-key='amount'>{{ $budget->amount }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.budgets.fields.project')</th>
-                            <td field-key='project'>{{ $budget->project->name ?? '' }}</td>
+                            <th>@lang('global.budgets.fields.projects')</th>
+                            <td field-key='projects'>{{ $budget->projects->name ?? '' }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.budgets.fields.category')</th>

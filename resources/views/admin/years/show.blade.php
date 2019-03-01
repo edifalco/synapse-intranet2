@@ -32,11 +32,14 @@
     <thead>
         <tr>
             <th>@lang('global.budgets.fields.amount')</th>
-                        <th>@lang('global.budgets.fields.project')</th>
+                        <th>@lang('global.budgets.fields.projects')</th>
                         <th>@lang('global.budgets.fields.category')</th>
                         <th>@lang('global.budgets.fields.year')</th>
-                                                <th>&nbsp;</th>
-
+                        @if( request('show_deleted') == 1 )
+                        <th>&nbsp;</th>
+                        @else
+                        <th>&nbsp;</th>
+                        @endif
         </tr>
     </thead>
 
@@ -45,10 +48,28 @@
             @foreach ($budgets as $budget)
                 <tr data-entry-id="{{ $budget->id }}">
                     <td field-key='amount'>{{ $budget->amount }}</td>
-                                <td field-key='project'>{{ $budget->project->name ?? '' }}</td>
+                                <td field-key='projects'>{{ $budget->projects->name ?? '' }}</td>
                                 <td field-key='category'>{{ $budget->category->name ?? '' }}</td>
                                 <td field-key='year'>{{ $budget->year->name ?? '' }}</td>
-                                                                <td>
+                                @if( request('show_deleted') == 1 )
+                                <td>
+                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'POST',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.budgets.restore', $budget->id])) !!}
+                                    {!! Form::submit(trans('global.app_restore'), array('class' => 'btn btn-xs btn-success')) !!}
+                                    {!! Form::close() !!}
+                                                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.budgets.perma_del', $budget->id])) !!}
+                                    {!! Form::submit(trans('global.app_permadel'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                                                </td>
+                                @else
+                                <td>
                                     @can('budget_view')
                                     <a href="{{ route('admin.budgets.show',[$budget->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
                                     @endcan
@@ -65,7 +86,7 @@
                                     {!! Form::close() !!}
                                     @endcan
                                 </td>
-
+                                @endif
                 </tr>
             @endforeach
         @else

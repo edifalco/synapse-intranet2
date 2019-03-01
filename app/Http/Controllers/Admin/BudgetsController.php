@@ -23,7 +23,14 @@ class BudgetsController extends Controller
         }
 
 
-                $budgets = Budget::all();
+        if (request('show_deleted') == 1) {
+            if (! Gate::allows('budget_delete')) {
+                return abort(401);
+            }
+            $budgets = Budget::onlyTrashed()->get();
+        } else {
+            $budgets = Budget::all();
+        }
 
         return view('admin.budgets.index', compact('budgets'));
     }
@@ -160,4 +167,38 @@ class BudgetsController extends Controller
         }
     }
 
+
+    /**
+     * Restore Budget from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        if (! Gate::allows('budget_delete')) {
+            return abort(401);
+        }
+        $budget = Budget::onlyTrashed()->findOrFail($id);
+        $budget->restore();
+
+        return redirect()->route('admin.budgets.index');
+    }
+
+    /**
+     * Permanently delete Budget from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function perma_del($id)
+    {
+        if (! Gate::allows('budget_delete')) {
+            return abort(401);
+        }
+        $budget = Budget::onlyTrashed()->findOrFail($id);
+        $budget->forceDelete();
+
+        return redirect()->route('admin.budgets.index');
+    }
 }

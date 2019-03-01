@@ -21,16 +21,16 @@
                             <td field-key='project'>{{ $invoice->project->name ?? '' }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.invoices.fields.contingency')</th>
-                            <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
-                        </tr>
-                        <tr>
                             <th>@lang('global.invoices.fields.expense-type')</th>
                             <td field-key='expense_type'>{{ $invoice->expense_type->name ?? '' }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.invoices.fields.meeting')</th>
                             <td field-key='meeting'>{{ $invoice->meeting->name ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.contingency')</th>
+                            <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.invoices.fields.date')</th>

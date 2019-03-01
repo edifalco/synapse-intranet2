@@ -38,19 +38,19 @@
                 </a>
             </li>@endcan
             
+            @can('budget_access')
+            <li>
+                <a href="{{ route('admin.budgets.index') }}">
+                    <i class="fa fa-gears"></i>
+                    <span>@lang('global.budgets.title')</span>
+                </a>
+            </li>@endcan
+            
             @can('provider_access')
             <li>
                 <a href="{{ route('admin.providers.index') }}">
                     <i class="fa fa-tags"></i>
                     <span>@lang('global.providers.title')</span>
-                </a>
-            </li>@endcan
-            
-            @can('medium_access')
-            <li>
-                <a href="{{ route('admin.media.index') }}">
-                    <i class="fa fa-tags"></i>
-                    <span>@lang('global.media.title')</span>
                 </a>
             </li>@endcan
             
@@ -64,14 +64,6 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    @can('budget_access')
-                    <li>
-                        <a href="{{ route('admin.budgets.index') }}">
-                            <i class="fa fa-tags"></i>
-                            <span>@lang('global.budgets.title')</span>
-                        </a>
-                    </li>@endcan
-                    
                     @can('category_access')
                     <li>
                         <a href="{{ route('admin.categories.index') }}">

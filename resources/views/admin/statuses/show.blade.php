@@ -52,11 +52,7 @@
                     <td field-key='name'>{{ $project->name }}</td>
                                 <td field-key='start_date'>{{ $project->start_date }}</td>
                                 <td field-key='end_date'>{{ $project->end_date }}</td>
-                                <td field-key='logo'>
-                                    @foreach ($project->logo as $singleLogo)
-                                        <span class="label label-info label-many">{{ $singleLogo->responsive_images }}</span>
-                                    @endforeach
-                                </td>
+                                <td field-key='logo'>@if($project->logo)<a href="{{ asset(env('UPLOAD_PATH').'/' . $project->logo) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $project->logo) }}"/></a>@endif</td>
                                 <td field-key='status'>{{ $project->status->name ?? '' }}</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>

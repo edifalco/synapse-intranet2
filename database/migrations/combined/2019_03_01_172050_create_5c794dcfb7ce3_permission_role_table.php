@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Create5c7921854f864PermissionRoleTable extends Migration
+class Create5c794dcfb7ce3PermissionRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,9 +15,9 @@ class Create5c7921854f864PermissionRoleTable extends Migration
         if(! Schema::hasTable('permission_role')) {
             Schema::create('permission_role', function (Blueprint $table) {
                 $table->integer('permission_id')->unsigned()->nullable();
-                $table->foreign('permission_id', 'fk_p_272445_272446_role_p_5c7921854f97f')->references('id')->on('permissions')->onDelete('cascade');
+                $table->foreign('permission_id', 'fk_p_272445_272446_role_p_5c794dcfb7e41')->references('id')->on('permissions')->onDelete('cascade');
                 $table->integer('role_id')->unsigned()->nullable();
-                $table->foreign('role_id', 'fk_p_272446_272445_permis_5c7921854fa74')->references('id')->on('roles')->onDelete('cascade');
+                $table->foreign('role_id', 'fk_p_272446_272445_permis_5c794dcfb7f14')->references('id')->on('roles')->onDelete('cascade');
                 
             });
         }

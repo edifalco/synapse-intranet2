@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Add5c792182ddd86RelationshipsToInvoiceTable extends Migration
+class Add5c79497626eebRelationshipsToInvoiceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -61,51 +61,6 @@ class Add5c792182ddd86RelationshipsToInvoiceTable extends Migration
     public function down()
     {
         Schema::table('invoices', function(Blueprint $table) {
-            if(Schema::hasColumn('invoices', 'user_id')) {
-                $table->dropForeign('272452_5c7913954a145');
-                $table->dropIndex('272452_5c7913954a145');
-                $table->dropColumn('user_id');
-            }
-            if(Schema::hasColumn('invoices', 'project_id')) {
-                $table->dropForeign('272452_5c79139567a2f');
-                $table->dropIndex('272452_5c79139567a2f');
-                $table->dropColumn('project_id');
-            }
-            if(Schema::hasColumn('invoices', 'contingency_id')) {
-                $table->dropForeign('272452_5c791394c8562');
-                $table->dropIndex('272452_5c791394c8562');
-                $table->dropColumn('contingency_id');
-            }
-            if(Schema::hasColumn('invoices', 'expense_type_id')) {
-                $table->dropForeign('272452_5c791394a14cf');
-                $table->dropIndex('272452_5c791394a14cf');
-                $table->dropColumn('expense_type_id');
-            }
-            if(Schema::hasColumn('invoices', 'meeting_id')) {
-                $table->dropForeign('272452_5c791394b4cc8');
-                $table->dropIndex('272452_5c791394b4cc8');
-                $table->dropColumn('meeting_id');
-            }
-            if(Schema::hasColumn('invoices', 'provider_id')) {
-                $table->dropForeign('272452_5c791394e260f');
-                $table->dropIndex('272452_5c791394e260f');
-                $table->dropColumn('provider_id');
-            }
-            if(Schema::hasColumn('invoices', 'service_type_id')) {
-                $table->dropForeign('272452_5c79139502620');
-                $table->dropIndex('272452_5c79139502620');
-                $table->dropColumn('service_type_id');
-            }
-            if(Schema::hasColumn('invoices', 'pm_id')) {
-                $table->dropForeign('272452_5c7913951a16e');
-                $table->dropIndex('272452_5c7913951a16e');
-                $table->dropColumn('pm_id');
-            }
-            if(Schema::hasColumn('invoices', 'finance_id')) {
-                $table->dropForeign('272452_5c791395345fe');
-                $table->dropIndex('272452_5c791395345fe');
-                $table->dropColumn('finance_id');
-            }
             
         });
     }
