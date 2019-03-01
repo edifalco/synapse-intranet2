@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreInvoicesRequest;
 use App\Http\Requests\Admin\UpdateInvoicesRequest;
+use App\Http\Controllers\Traits\FileUploadTrait;
 
 class InvoicesController extends Controller
 {
+    use FileUploadTrait;
+
     /**
      * Display a listing of Invoice.
      *
@@ -46,18 +49,17 @@ class InvoicesController extends Controller
             return abort(401);
         }
         
+        $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $projects = \App\Project::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $expense_types = \App\ExpenseType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $meetings = \App\Meeting::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $providers = \App\Provider::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $service_types = \App\ServiceType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $pms = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $finances = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $projects = \App\Project::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
-        return view('admin.invoices.create', compact('expense_types', 'meetings', 'contingencies', 'providers', 'service_types', 'pms', 'finances', 'users', 'projects', 'created_bies'));
+        return view('admin.invoices.create', compact('users', 'projects', 'contingencies', 'expense_types', 'meetings', 'providers', 'service_types', 'pms', 'finances'));
     }
 
     /**
@@ -71,8 +73,16 @@ class InvoicesController extends Controller
         if (! Gate::allows('invoice_create')) {
             return abort(401);
         }
+        $request = $this->saveFiles($request);
         $invoice = Invoice::create($request->all());
 
+
+        foreach ($request->input('files_id', []) as $index => $id) {
+            $model          = config('medialibrary.media_model');
+            $file           = $model::find($id);
+            $file->model_id = $invoice->id;
+            $file->save();
+        }
 
 
         return redirect()->route('admin.invoices.index');
@@ -91,20 +101,19 @@ class InvoicesController extends Controller
             return abort(401);
         }
         
+        $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $projects = \App\Project::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $expense_types = \App\ExpenseType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $meetings = \App\Meeting::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $contingencies = \App\Contingency::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $providers = \App\Provider::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $service_types = \App\ServiceType::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $pms = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $finances = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $projects = \App\Project::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
         $invoice = Invoice::findOrFail($id);
 
-        return view('admin.invoices.edit', compact('invoice', 'expense_types', 'meetings', 'contingencies', 'providers', 'service_types', 'pms', 'finances', 'users', 'projects', 'created_bies'));
+        return view('admin.invoices.edit', compact('invoice', 'users', 'projects', 'contingencies', 'expense_types', 'meetings', 'providers', 'service_types', 'pms', 'finances'));
     }
 
     /**
@@ -119,9 +128,20 @@ class InvoicesController extends Controller
         if (! Gate::allows('invoice_edit')) {
             return abort(401);
         }
+        $request = $this->saveFiles($request);
         $invoice = Invoice::findOrFail($id);
         $invoice->update($request->all());
 
+
+        $media = [];
+        foreach ($request->input('files_id', []) as $index => $id) {
+            $model          = config('medialibrary.media_model');
+            $file           = $model::find($id);
+            $file->model_id = $invoice->id;
+            $file->save();
+            $media[] = $file->toArray();
+        }
+        $invoice->updateMedia($media, 'files');
 
 
         return redirect()->route('admin.invoices.index');
@@ -157,7 +177,7 @@ class InvoicesController extends Controller
             return abort(401);
         }
         $invoice = Invoice::findOrFail($id);
-        $invoice->delete();
+        $invoice->deletePreservingMedia();
 
         return redirect()->route('admin.invoices.index');
     }
@@ -176,7 +196,7 @@ class InvoicesController extends Controller
             $entries = Invoice::whereIn('id', $request->input('ids'))->get();
 
             foreach ($entries as $entry) {
-                $entry->delete();
+                $entry->deletePreservingMedia();
             }
         }
     }

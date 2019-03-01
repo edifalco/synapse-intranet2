@@ -4,42 +4,148 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 /**
  * Class Invoice
  *
  * @package App
+ * @property string $user
+ * @property string $project
+ * @property string $contingency
+ * @property string $expense_type
+ * @property string $meeting
+ * @property string $date
+ * @property string $due_date
  * @property double $invoice_subtotal
  * @property double $invoice_taxes
  * @property double $invoice_total
  * @property double $budget_subtotal
  * @property double $budget_taxes
  * @property double $budget_total
- * @property string $date
- * @property string $due_date
- * @property time $pm_approval_date
- * @property time $finance_approval_date
- * @property string $expense_type
- * @property string $meeting
- * @property string $contingency
  * @property string $provider
  * @property string $service_type
- * @property string $pm
- * @property string $finance
  * @property string $service
  * @property string $selection_criteria
- * @property string $user
- * @property string $project
- * @property string $created_by
+ * @property string $pm
+ * @property time $pm_approval_date
+ * @property string $finance
+ * @property time $finance_approval_date
 */
-class Invoice extends Model
+class Invoice extends Model implements HasMedia
 {
-    use SoftDeletes;
+    use SoftDeletes, HasMediaTrait;
 
-    protected $fillable = ['invoice_subtotal', 'invoice_taxes', 'invoice_total', 'budget_subtotal', 'budget_taxes', 'budget_total', 'date', 'due_date', 'pm_approval_date', 'finance_approval_date', 'service', 'selection_criteria', 'expense_type_id', 'meeting_id', 'contingency_id', 'provider_id', 'service_type_id', 'pm_id', 'finance_id', 'user_id', 'project_id', 'created_by_id'];
+    protected $fillable = ['date', 'due_date', 'invoice_subtotal', 'invoice_taxes', 'invoice_total', 'budget_subtotal', 'budget_taxes', 'budget_total', 'service', 'selection_criteria', 'pm_approval_date', 'finance_approval_date', 'user_id', 'project_id', 'contingency_id', 'expense_type_id', 'meeting_id', 'provider_id', 'service_type_id', 'pm_id', 'finance_id'];
     protected $hidden = [];
     
     
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setUserIdAttribute($input)
+    {
+        $this->attributes['user_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setProjectIdAttribute($input)
+    {
+        $this->attributes['project_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setContingencyIdAttribute($input)
+    {
+        $this->attributes['contingency_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setExpenseTypeIdAttribute($input)
+    {
+        $this->attributes['expense_type_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setMeetingIdAttribute($input)
+    {
+        $this->attributes['meeting_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set attribute to date format
+     * @param $input
+     */
+    public function setDateAttribute($input)
+    {
+        if ($input != null && $input != '') {
+            $this->attributes['date'] = Carbon::createFromFormat(config('app.date_format'), $input)->format('Y-m-d');
+        } else {
+            $this->attributes['date'] = null;
+        }
+    }
+
+    /**
+     * Get attribute from date format
+     * @param $input
+     *
+     * @return string
+     */
+    public function getDateAttribute($input)
+    {
+        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format'));
+
+        if ($input != $zeroDate && $input != null) {
+            return Carbon::createFromFormat('Y-m-d', $input)->format(config('app.date_format'));
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Set attribute to date format
+     * @param $input
+     */
+    public function setDueDateAttribute($input)
+    {
+        if ($input != null && $input != '') {
+            $this->attributes['due_date'] = Carbon::createFromFormat(config('app.date_format'), $input)->format('Y-m-d');
+        } else {
+            $this->attributes['due_date'] = null;
+        }
+    }
+
+    /**
+     * Get attribute from date format
+     * @param $input
+     *
+     * @return string
+     */
+    public function getDueDateAttribute($input)
+    {
+        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format'));
+
+        if ($input != $zeroDate && $input != null) {
+            return Carbon::createFromFormat('Y-m-d', $input)->format(config('app.date_format'));
+        } else {
+            return '';
+        }
+    }
 
     /**
      * Set attribute to date format
@@ -120,63 +226,30 @@ class Invoice extends Model
     }
 
     /**
-     * Set attribute to date format
+     * Set to null if empty
      * @param $input
      */
-    public function setDateAttribute($input)
+    public function setProviderIdAttribute($input)
     {
-        if ($input != null && $input != '') {
-            $this->attributes['date'] = Carbon::createFromFormat(config('app.date_format'), $input)->format('Y-m-d');
-        } else {
-            $this->attributes['date'] = null;
-        }
+        $this->attributes['provider_id'] = $input ? $input : null;
     }
 
     /**
-     * Get attribute from date format
+     * Set to null if empty
      * @param $input
-     *
-     * @return string
      */
-    public function getDateAttribute($input)
+    public function setServiceTypeIdAttribute($input)
     {
-        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format'));
-
-        if ($input != $zeroDate && $input != null) {
-            return Carbon::createFromFormat('Y-m-d', $input)->format(config('app.date_format'));
-        } else {
-            return '';
-        }
+        $this->attributes['service_type_id'] = $input ? $input : null;
     }
 
     /**
-     * Set attribute to date format
+     * Set to null if empty
      * @param $input
      */
-    public function setDueDateAttribute($input)
+    public function setPmIdAttribute($input)
     {
-        if ($input != null && $input != '') {
-            $this->attributes['due_date'] = Carbon::createFromFormat(config('app.date_format'), $input)->format('Y-m-d');
-        } else {
-            $this->attributes['due_date'] = null;
-        }
-    }
-
-    /**
-     * Get attribute from date format
-     * @param $input
-     *
-     * @return string
-     */
-    public function getDueDateAttribute($input)
-    {
-        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format'));
-
-        if ($input != $zeroDate && $input != null) {
-            return Carbon::createFromFormat('Y-m-d', $input)->format(config('app.date_format'));
-        } else {
-            return '';
-        }
+        $this->attributes['pm_id'] = $input ? $input : null;
     }
 
     /**
@@ -208,6 +281,15 @@ class Invoice extends Model
     }
 
     /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setFinanceIdAttribute($input)
+    {
+        $this->attributes['finance_id'] = $input ? $input : null;
+    }
+
+    /**
      * Set attribute to date format
      * @param $input
      */
@@ -234,95 +316,20 @@ class Invoice extends Model
             return '';
         }
     }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setExpenseTypeIdAttribute($input)
+    
+    public function user()
     {
-        $this->attributes['expense_type_id'] = $input ? $input : null;
+        return $this->belongsTo(User::class, 'user_id');
     }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setMeetingIdAttribute($input)
+    
+    public function project()
     {
-        $this->attributes['meeting_id'] = $input ? $input : null;
+        return $this->belongsTo(Project::class, 'project_id')->withTrashed();
     }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setContingencyIdAttribute($input)
+    
+    public function contingency()
     {
-        $this->attributes['contingency_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setProviderIdAttribute($input)
-    {
-        $this->attributes['provider_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setServiceTypeIdAttribute($input)
-    {
-        $this->attributes['service_type_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setPmIdAttribute($input)
-    {
-        $this->attributes['pm_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setFinanceIdAttribute($input)
-    {
-        $this->attributes['finance_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setUserIdAttribute($input)
-    {
-        $this->attributes['user_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setProjectIdAttribute($input)
-    {
-        $this->attributes['project_id'] = $input ? $input : null;
-    }
-
-    /**
-     * Set to null if empty
-     * @param $input
-     */
-    public function setCreatedByIdAttribute($input)
-    {
-        $this->attributes['created_by_id'] = $input ? $input : null;
+        return $this->belongsTo(Contingency::class, 'contingency_id')->withTrashed();
     }
     
     public function expense_type()
@@ -333,11 +340,6 @@ class Invoice extends Model
     public function meeting()
     {
         return $this->belongsTo(Meeting::class, 'meeting_id')->withTrashed();
-    }
-    
-    public function contingency()
-    {
-        return $this->belongsTo(Contingency::class, 'contingency_id')->withTrashed();
     }
     
     public function provider()
@@ -358,21 +360,6 @@ class Invoice extends Model
     public function finance()
     {
         return $this->belongsTo(User::class, 'finance_id');
-    }
-    
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-    
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'project_id')->withTrashed();
-    }
-    
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
     }
     
 }

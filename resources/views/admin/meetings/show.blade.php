@@ -51,28 +51,19 @@
 <table class="table table-bordered table-striped {{ count($invoices) > 0 ? 'datatable' : '' }}">
     <thead>
         <tr>
-            <th>@lang('global.invoices.fields.invoice-subtotal')</th>
-                        <th>@lang('global.invoices.fields.invoice-taxes')</th>
-                        <th>@lang('global.invoices.fields.invoice-total')</th>
-                        <th>@lang('global.invoices.fields.budget-subtotal')</th>
-                        <th>@lang('global.invoices.fields.budget-taxes')</th>
-                        <th>@lang('global.invoices.fields.budget-total')</th>
-                        <th>@lang('global.invoices.fields.date')</th>
-                        <th>@lang('global.invoices.fields.due-date')</th>
-                        <th>@lang('global.invoices.fields.pm-approval-date')</th>
-                        <th>@lang('global.invoices.fields.finance-approval-date')</th>
+            <th>@lang('global.invoices.fields.user')</th>
+                        <th>@lang('global.invoices.fields.project')</th>
+                        <th>@lang('global.invoices.fields.contingency')</th>
                         <th>@lang('global.invoices.fields.expense-type')</th>
                         <th>@lang('global.invoices.fields.meeting')</th>
-                        <th>@lang('global.invoices.fields.contingency')</th>
+                        <th>@lang('global.invoices.fields.date')</th>
+                        <th>@lang('global.invoices.fields.due-date')</th>
+                        <th>@lang('global.invoices.fields.invoice-subtotal')</th>
                         <th>@lang('global.invoices.fields.provider')</th>
-                        <th>@lang('global.invoices.fields.service-type')</th>
                         <th>@lang('global.invoices.fields.pm')</th>
+                        <th>@lang('global.invoices.fields.pm-approval-date')</th>
                         <th>@lang('global.invoices.fields.finance')</th>
-                        <th>@lang('global.invoices.fields.service')</th>
-                        <th>@lang('global.invoices.fields.selection-criteria')</th>
-                        <th>@lang('global.invoices.fields.user')</th>
-                        <th>@lang('global.invoices.fields.project')</th>
-                        <th>@lang('global.invoices.fields.created-by')</th>
+                        <th>@lang('global.invoices.fields.finance-approval-date')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -85,28 +76,19 @@
         @if (count($invoices) > 0)
             @foreach ($invoices as $invoice)
                 <tr data-entry-id="{{ $invoice->id }}">
-                    <td field-key='invoice_subtotal'>{{ $invoice->invoice_subtotal }}</td>
-                                <td field-key='invoice_taxes'>{{ $invoice->invoice_taxes }}</td>
-                                <td field-key='invoice_total'>{{ $invoice->invoice_total }}</td>
-                                <td field-key='budget_subtotal'>{{ $invoice->budget_subtotal }}</td>
-                                <td field-key='budget_taxes'>{{ $invoice->budget_taxes }}</td>
-                                <td field-key='budget_total'>{{ $invoice->budget_total }}</td>
-                                <td field-key='date'>{{ $invoice->date }}</td>
-                                <td field-key='due_date'>{{ $invoice->due_date }}</td>
-                                <td field-key='pm_approval_date'>{{ $invoice->pm_approval_date }}</td>
-                                <td field-key='finance_approval_date'>{{ $invoice->finance_approval_date }}</td>
+                    <td field-key='user'>{{ $invoice->user->name ?? '' }}</td>
+                                <td field-key='project'>{{ $invoice->project->name ?? '' }}</td>
+                                <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
                                 <td field-key='expense_type'>{{ $invoice->expense_type->name ?? '' }}</td>
                                 <td field-key='meeting'>{{ $invoice->meeting->name ?? '' }}</td>
-                                <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
+                                <td field-key='date'>{{ $invoice->date }}</td>
+                                <td field-key='due_date'>{{ $invoice->due_date }}</td>
+                                <td field-key='invoice_subtotal'>{{ $invoice->invoice_subtotal }}</td>
                                 <td field-key='provider'>{{ $invoice->provider->name ?? '' }}</td>
-                                <td field-key='service_type'>{{ $invoice->service_type->name ?? '' }}</td>
                                 <td field-key='pm'>{{ $invoice->pm->name ?? '' }}</td>
+                                <td field-key='pm_approval_date'>{{ $invoice->pm_approval_date }}</td>
                                 <td field-key='finance'>{{ $invoice->finance->name ?? '' }}</td>
-                                <td field-key='service'>{{ $invoice->service }}</td>
-                                <td field-key='selection_criteria'>{{ $invoice->selection_criteria }}</td>
-                                <td field-key='user'>{{ $invoice->user->name ?? '' }}</td>
-                                <td field-key='project'>{{ $invoice->project->name ?? '' }}</td>
-                                <td field-key='created_by'>{{ $invoice->created_by->name ?? '' }}</td>
+                                <td field-key='finance_approval_date'>{{ $invoice->finance_approval_date }}</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>
                                     {!! Form::open(array(

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Add5c7915ebc06c1RelationshipsToInvoiceTable extends Migration
+class Add5c792182ddd86RelationshipsToInvoiceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,25 @@ class Add5c7915ebc06c1RelationshipsToInvoiceTable extends Migration
     public function up()
     {
         Schema::table('invoices', function(Blueprint $table) {
-            if (!Schema::hasColumn('invoices', 'expense_type_id')) {
+            if (!Schema::hasColumn('invoices', 'user_id')) {
+                $table->integer('user_id')->unsigned()->nullable();
+                $table->foreign('user_id', '272452_5c7913954a145')->references('id')->on('users')->onDelete('cascade');
+                }
+                if (!Schema::hasColumn('invoices', 'project_id')) {
+                $table->integer('project_id')->unsigned()->nullable();
+                $table->foreign('project_id', '272452_5c79139567a2f')->references('id')->on('projects')->onDelete('cascade');
+                }
+                if (!Schema::hasColumn('invoices', 'contingency_id')) {
+                $table->integer('contingency_id')->unsigned()->nullable();
+                $table->foreign('contingency_id', '272452_5c791394c8562')->references('id')->on('contingencies')->onDelete('cascade');
+                }
+                if (!Schema::hasColumn('invoices', 'expense_type_id')) {
                 $table->integer('expense_type_id')->unsigned()->nullable();
                 $table->foreign('expense_type_id', '272452_5c791394a14cf')->references('id')->on('expense_types')->onDelete('cascade');
                 }
                 if (!Schema::hasColumn('invoices', 'meeting_id')) {
                 $table->integer('meeting_id')->unsigned()->nullable();
                 $table->foreign('meeting_id', '272452_5c791394b4cc8')->references('id')->on('meetings')->onDelete('cascade');
-                }
-                if (!Schema::hasColumn('invoices', 'contingency_id')) {
-                $table->integer('contingency_id')->unsigned()->nullable();
-                $table->foreign('contingency_id', '272452_5c791394c8562')->references('id')->on('contingencies')->onDelete('cascade');
                 }
                 if (!Schema::hasColumn('invoices', 'provider_id')) {
                 $table->integer('provider_id')->unsigned()->nullable();
@@ -41,18 +49,6 @@ class Add5c7915ebc06c1RelationshipsToInvoiceTable extends Migration
                 $table->integer('finance_id')->unsigned()->nullable();
                 $table->foreign('finance_id', '272452_5c791395345fe')->references('id')->on('users')->onDelete('cascade');
                 }
-                if (!Schema::hasColumn('invoices', 'user_id')) {
-                $table->integer('user_id')->unsigned()->nullable();
-                $table->foreign('user_id', '272452_5c7913954a145')->references('id')->on('users')->onDelete('cascade');
-                }
-                if (!Schema::hasColumn('invoices', 'project_id')) {
-                $table->integer('project_id')->unsigned()->nullable();
-                $table->foreign('project_id', '272452_5c79139567a2f')->references('id')->on('projects')->onDelete('cascade');
-                }
-                if (!Schema::hasColumn('invoices', 'created_by_id')) {
-                $table->integer('created_by_id')->unsigned()->nullable();
-                $table->foreign('created_by_id', '272452_5c7913957b34f')->references('id')->on('users')->onDelete('cascade');
-                }
                 
         });
     }
@@ -65,6 +61,21 @@ class Add5c7915ebc06c1RelationshipsToInvoiceTable extends Migration
     public function down()
     {
         Schema::table('invoices', function(Blueprint $table) {
+            if(Schema::hasColumn('invoices', 'user_id')) {
+                $table->dropForeign('272452_5c7913954a145');
+                $table->dropIndex('272452_5c7913954a145');
+                $table->dropColumn('user_id');
+            }
+            if(Schema::hasColumn('invoices', 'project_id')) {
+                $table->dropForeign('272452_5c79139567a2f');
+                $table->dropIndex('272452_5c79139567a2f');
+                $table->dropColumn('project_id');
+            }
+            if(Schema::hasColumn('invoices', 'contingency_id')) {
+                $table->dropForeign('272452_5c791394c8562');
+                $table->dropIndex('272452_5c791394c8562');
+                $table->dropColumn('contingency_id');
+            }
             if(Schema::hasColumn('invoices', 'expense_type_id')) {
                 $table->dropForeign('272452_5c791394a14cf');
                 $table->dropIndex('272452_5c791394a14cf');
@@ -74,11 +85,6 @@ class Add5c7915ebc06c1RelationshipsToInvoiceTable extends Migration
                 $table->dropForeign('272452_5c791394b4cc8');
                 $table->dropIndex('272452_5c791394b4cc8');
                 $table->dropColumn('meeting_id');
-            }
-            if(Schema::hasColumn('invoices', 'contingency_id')) {
-                $table->dropForeign('272452_5c791394c8562');
-                $table->dropIndex('272452_5c791394c8562');
-                $table->dropColumn('contingency_id');
             }
             if(Schema::hasColumn('invoices', 'provider_id')) {
                 $table->dropForeign('272452_5c791394e260f');
@@ -99,21 +105,6 @@ class Add5c7915ebc06c1RelationshipsToInvoiceTable extends Migration
                 $table->dropForeign('272452_5c791395345fe');
                 $table->dropIndex('272452_5c791395345fe');
                 $table->dropColumn('finance_id');
-            }
-            if(Schema::hasColumn('invoices', 'user_id')) {
-                $table->dropForeign('272452_5c7913954a145');
-                $table->dropIndex('272452_5c7913954a145');
-                $table->dropColumn('user_id');
-            }
-            if(Schema::hasColumn('invoices', 'project_id')) {
-                $table->dropForeign('272452_5c79139567a2f');
-                $table->dropIndex('272452_5c79139567a2f');
-                $table->dropColumn('project_id');
-            }
-            if(Schema::hasColumn('invoices', 'created_by_id')) {
-                $table->dropForeign('272452_5c7913957b34f');
-                $table->dropIndex('272452_5c7913957b34f');
-                $table->dropColumn('created_by_id');
             }
             
         });

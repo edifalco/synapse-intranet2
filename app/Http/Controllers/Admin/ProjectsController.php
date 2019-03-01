@@ -130,11 +130,11 @@ class ProjectsController extends Controller
         
         $logos = \App\Medium::get()->pluck('responsive_images', 'id');
 
-        $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$budgets = \App\Budget::where('project_id', $id)->get();$meetings = \App\Meeting::where('project_id', $id)->get();$invoices = \App\Invoice::where('project_id', $id)->get();
+        $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$budgets = \App\Budget::where('project_id', $id)->get();$invoices = \App\Invoice::where('project_id', $id)->get();$meetings = \App\Meeting::where('project_id', $id)->get();
 
         $project = Project::findOrFail($id);
 
-        return view('admin.projects.show', compact('project', 'budgets', 'meetings', 'invoices'));
+        return view('admin.projects.show', compact('project', 'budgets', 'invoices', 'meetings'));
     }
 
 

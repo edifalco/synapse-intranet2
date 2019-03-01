@@ -166,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         
 
         /*

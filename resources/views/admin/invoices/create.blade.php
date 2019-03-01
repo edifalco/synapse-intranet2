@@ -2,7 +2,7 @@
 
 @section('content')
     <h3 class="page-title">@lang('global.invoices.title')</h3>
-    {!! Form::open(['method' => 'POST', 'route' => ['admin.invoices.store']]) !!}
+    {!! Form::open(['method' => 'POST', 'route' => ['admin.invoices.store'], 'files' => true,]) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -10,6 +10,66 @@
         </div>
         
         <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('project_id', trans('global.invoices.fields.project').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('project_id', $projects, old('project_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('project_id'))
+                        <p class="help-block">
+                            {{ $errors->first('project_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('contingency_id', trans('global.invoices.fields.contingency').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('contingency_id', $contingencies, old('contingency_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('contingency_id'))
+                        <p class="help-block">
+                            {{ $errors->first('contingency_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('expense_type_id', trans('global.invoices.fields.expense-type').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('expense_type_id', $expense_types, old('expense_type_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('expense_type_id'))
+                        <p class="help-block">
+                            {{ $errors->first('expense_type_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('meeting_id', trans('global.invoices.fields.meeting').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('meeting_id', $meetings, old('meeting_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('meeting_id'))
+                        <p class="help-block">
+                            {{ $errors->first('meeting_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('due_date', trans('global.invoices.fields.due-date').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('due_date', old('due_date'), ['class' => 'form-control date', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('due_date'))
+                        <p class="help-block">
+                            {{ $errors->first('due_date') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('invoice_subtotal', trans('global.invoices.fields.invoice-subtotal').'', ['class' => 'control-label']) !!}
@@ -84,90 +144,6 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('date', trans('global.invoices.fields.date').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('date', old('date'), ['class' => 'form-control date', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('date'))
-                        <p class="help-block">
-                            {{ $errors->first('date') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('due_date', trans('global.invoices.fields.due-date').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('due_date', old('due_date'), ['class' => 'form-control date', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('due_date'))
-                        <p class="help-block">
-                            {{ $errors->first('due_date') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('pm_approval_date', trans('global.invoices.fields.pm-approval-date').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('pm_approval_date', old('pm_approval_date'), ['class' => 'form-control timepicker', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('pm_approval_date'))
-                        <p class="help-block">
-                            {{ $errors->first('pm_approval_date') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('finance_approval_date', trans('global.invoices.fields.finance-approval-date').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('finance_approval_date', old('finance_approval_date'), ['class' => 'form-control timepicker', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('finance_approval_date'))
-                        <p class="help-block">
-                            {{ $errors->first('finance_approval_date') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('expense_type_id', trans('global.invoices.fields.expense-type').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('expense_type_id', $expense_types, old('expense_type_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('expense_type_id'))
-                        <p class="help-block">
-                            {{ $errors->first('expense_type_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('meeting_id', trans('global.invoices.fields.meeting').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('meeting_id', $meetings, old('meeting_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('meeting_id'))
-                        <p class="help-block">
-                            {{ $errors->first('meeting_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('contingency_id', trans('global.invoices.fields.contingency').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('contingency_id', $contingencies, old('contingency_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('contingency_id'))
-                        <p class="help-block">
-                            {{ $errors->first('contingency_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
                     {!! Form::label('provider_id', trans('global.invoices.fields.provider').'', ['class' => 'control-label']) !!}
                     {!! Form::select('provider_id', $providers, old('provider_id'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
@@ -186,30 +162,6 @@
                     @if($errors->has('service_type_id'))
                         <p class="help-block">
                             {{ $errors->first('service_type_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('pm_id', trans('global.invoices.fields.pm').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('pm_id', $pms, old('pm_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('pm_id'))
-                        <p class="help-block">
-                            {{ $errors->first('pm_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('finance_id', trans('global.invoices.fields.finance').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('finance_id', $finances, old('finance_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('finance_id'))
-                        <p class="help-block">
-                            {{ $errors->first('finance_id') }}
                         </p>
                     @endif
                 </div>
@@ -240,36 +192,34 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('user_id', trans('global.invoices.fields.user').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('user_id', $users, old('user_id'), ['class' => 'form-control select2']) !!}
+                    {!! Form::label('pm_id', trans('global.invoices.fields.pm').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('pm_id', $pms, old('pm_id'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('user_id'))
+                    @if($errors->has('pm_id'))
                         <p class="help-block">
-                            {{ $errors->first('user_id') }}
+                            {{ $errors->first('pm_id') }}
                         </p>
                     @endif
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('project_id', trans('global.invoices.fields.project').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('project_id', $projects, old('project_id'), ['class' => 'form-control select2']) !!}
+                    {!! Form::label('files', trans('global.invoices.fields.files').'', ['class' => 'control-label']) !!}
+                    {!! Form::file('files[]', [
+                        'multiple',
+                        'class' => 'form-control file-upload',
+                        'data-url' => route('admin.media.upload'),
+                        'data-bucket' => 'files',
+                        'data-filekey' => 'files',
+                        ]) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('project_id'))
+                    <div class="photo-block">
+                        <div class="progress-bar form-group">&nbsp;</div>
+                        <div class="files-list"></div>
+                    </div>
+                    @if($errors->has('files'))
                         <p class="help-block">
-                            {{ $errors->first('project_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('created_by_id', trans('global.invoices.fields.created-by').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('created_by_id', $created_bies, old('created_by_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('created_by_id'))
-                        <p class="help-block">
-                            {{ $errors->first('created_by_id') }}
+                            {{ $errors->first('files') }}
                         </p>
                     @endif
                 </div>
@@ -305,4 +255,53 @@
         });
     </script>
             
+    <script src="{{ asset('adminlte/plugins/fileUpload/js/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/fileUpload/js/jquery.fileupload.js') }}"></script>
+    <script>
+        $(function () {
+            $('.file-upload').each(function () {
+                var $this = $(this);
+                var $parent = $(this).parent();
+
+                $(this).fileupload({
+                    dataType: 'json',
+                    formData: {
+                        model_name: 'Invoice',
+                        bucket: $this.data('bucket'),
+                        file_key: $this.data('filekey'),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    add: function (e, data) {
+                        data.submit();
+                    },
+                    done: function (e, data) {
+                        $.each(data.result.files, function (index, file) {
+                            var $line = $($('<p/>', {class: "form-group"}).html(file.name + ' (' + file.size + ' bytes)').appendTo($parent.find('.files-list')));
+                            $line.append('<a href="#" class="btn btn-xs btn-danger remove-file">Remove</a>');
+                            $line.append('<input type="hidden" name="' + $this.data('bucket') + '_id[]" value="' + file.id + '"/>');
+                            if ($parent.find('.' + $this.data('bucket') + '-ids').val() != '') {
+                                $parent.find('.' + $this.data('bucket') + '-ids').val($parent.find('.' + $this.data('bucket') + '-ids').val() + ',');
+                            }
+                            $parent.find('.' + $this.data('bucket') + '-ids').val($parent.find('.' + $this.data('bucket') + '-ids').val() + file.id);
+                        });
+                        $parent.find('.progress-bar').hide().css(
+                            'width',
+                            '0%'
+                        );
+                    }
+                }).on('fileuploadprogressall', function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $parent.find('.progress-bar').show().css(
+                        'width',
+                        progress + '%'
+                    );
+                });
+            });
+            $(document).on('click', '.remove-file', function () {
+                var $parent = $(this).parent();
+                $parent.remove();
+                return false;
+            });
+        });
+    </script>
 @stop

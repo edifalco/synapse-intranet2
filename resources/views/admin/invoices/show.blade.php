@@ -13,6 +13,34 @@
                 <div class="col-md-6">
                     <table class="table table-bordered table-striped">
                         <tr>
+                            <th>@lang('global.invoices.fields.user')</th>
+                            <td field-key='user'>{{ $invoice->user->name ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.project')</th>
+                            <td field-key='project'>{{ $invoice->project->name ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.contingency')</th>
+                            <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.expense-type')</th>
+                            <td field-key='expense_type'>{{ $invoice->expense_type->name ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.meeting')</th>
+                            <td field-key='meeting'>{{ $invoice->meeting->name ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.date')</th>
+                            <td field-key='date'>{{ $invoice->date }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.due-date')</th>
+                            <td field-key='due_date'>{{ $invoice->due_date }}</td>
+                        </tr>
+                        <tr>
                             <th>@lang('global.invoices.fields.invoice-subtotal')</th>
                             <td field-key='invoice_subtotal'>{{ $invoice->invoice_subtotal }}</td>
                         </tr>
@@ -37,50 +65,12 @@
                             <td field-key='budget_total'>{{ $invoice->budget_total }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.invoices.fields.date')</th>
-                            <td field-key='date'>{{ $invoice->date }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.due-date')</th>
-                            <td field-key='due_date'>{{ $invoice->due_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.pm-approval-date')</th>
-                            <td field-key='pm_approval_date'>{{ $invoice->pm_approval_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.finance-approval-date')</th>
-                            <td field-key='finance_approval_date'>{{ $invoice->finance_approval_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.expense-type')</th>
-                            <td field-key='expense_type'>{{ $invoice->expense_type->name ?? '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.meeting')</th>
-                            <td field-key='meeting'>{{ $invoice->meeting->name ?? '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.contingency')</th>
-                            <td field-key='contingency'>{{ $invoice->contingency->name ?? '' }}</td>
-                        </tr>
-                        <tr>
                             <th>@lang('global.invoices.fields.provider')</th>
                             <td field-key='provider'>{{ $invoice->provider->name ?? '' }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.invoices.fields.service-type')</th>
                             <td field-key='service_type'>{{ $invoice->service_type->name ?? '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.pm')</th>
-                            <td field-key='pm'>{{ $invoice->pm->name ?? '' }}</td>
-<td field-key='name'>{{ isset($invoice->pm) ? $invoice->pm->name : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.invoices.fields.finance')</th>
-                            <td field-key='finance'>{{ $invoice->finance->name ?? '' }}</td>
-<td field-key='name'>{{ isset($invoice->finance) ? $invoice->finance->name : '' }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.invoices.fields.service')</th>
@@ -91,17 +81,28 @@
                             <td field-key='selection_criteria'>{{ $invoice->selection_criteria }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.invoices.fields.user')</th>
-                            <td field-key='user'>{{ $invoice->user->name ?? '' }}</td>
+                            <th>@lang('global.invoices.fields.pm')</th>
+                            <td field-key='pm'>{{ $invoice->pm->name ?? '' }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.invoices.fields.project')</th>
-                            <td field-key='project'>{{ $invoice->project->name ?? '' }}</td>
+                            <th>@lang('global.invoices.fields.pm-approval-date')</th>
+                            <td field-key='pm_approval_date'>{{ $invoice->pm_approval_date }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.invoices.fields.created-by')</th>
-                            <td field-key='created_by'>{{ $invoice->created_by->name ?? '' }}</td>
-<td field-key='name'>{{ isset($invoice->created_by) ? $invoice->created_by->name : '' }}</td>
+                            <th>@lang('global.invoices.fields.finance')</th>
+                            <td field-key='finance'>{{ $invoice->finance->name ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.finance-approval-date')</th>
+                            <td field-key='finance_approval_date'>{{ $invoice->finance_approval_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.invoices.fields.files')</th>
+                            <td field-key='files's> @foreach($invoice->getMedia('files') as $media)
+                                <p class="form-group">
+                                    <a href="{{ $media->getUrl() }}" target="_blank">{{ $media->name }} ({{ $media->size }} KB)</a>
+                                </p>
+                            @endforeach</td>
                         </tr>
                     </table>
                 </div>
