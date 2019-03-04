@@ -14,7 +14,8 @@ class InternalNotification extends Model
 {
     protected $fillable = ['text', 'link'];
     protected $hidden = [];
-    
+    public static $searchable = [
+    ];
     
     public static function boot()
     {

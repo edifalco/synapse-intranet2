@@ -6,6 +6,8 @@
     @can('income_category_create')
     <p>
         <a href="{{ route('admin.income_categories.create') }}" class="btn btn-success">@lang('global.app_add_new')</a>
+        <a href="#" class="btn btn-warning" style="margin-left:5px;" data-toggle="modal" data-target="#myModal">@lang('global.app_csvImport')</a>
+        @include('csvImport.modal', ['model' => 'IncomeCategory'])
         
     </p>
     @endcan
@@ -25,7 +27,6 @@
                             <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
                         @endcan
 
-                        <th>@lang('global.income-category.fields.name')</th>
                                                 <th>&nbsp;</th>
 
                     </tr>
@@ -39,7 +40,6 @@
                                     <td></td>
                                 @endcan
 
-                                <td field-key='name'>{{ $income_category->name }}</td>
                                                                 <td>
                                     @can('income_category_view')
                                     <a href="{{ route('admin.income_categories.show',[$income_category->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
@@ -62,7 +62,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="6">@lang('global.app_no_entries_in_table')</td>
+                            <td colspan="5">@lang('global.app_no_entries_in_table')</td>
                         </tr>
                     @endif
                 </tbody>

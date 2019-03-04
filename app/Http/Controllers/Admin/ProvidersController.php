@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProvidersRequest;
 use App\Http\Requests\Admin\UpdateProvidersRequest;
+use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class ProvidersController extends Controller
 {
     /**
@@ -23,16 +27,49 @@ class ProvidersController extends Controller
         }
 
 
-        if (request('show_deleted') == 1) {
-            if (! Gate::allows('provider_delete')) {
-                return abort(401);
+        
+        if (request()->ajax()) {
+            $query = Provider::query();
+            $template = 'actionsTemplate';
+            if(request('show_deleted') == 1) {
+                
+        if (! Gate::allows('provider_delete')) {
+            return abort(401);
+        }
+                $query->onlyTrashed();
+                $template = 'restoreTemplate';
             }
-            $providers = Provider::onlyTrashed()->get();
-        } else {
-            $providers = Provider::all();
+            $query->select([
+                'providers.id',
+                'providers.name',
+                'providers.address',
+                'providers.postal_code',
+                'providers.city',
+                'providers.country',
+                'providers.phone',
+                'providers.contact_person',
+                'providers.email',
+            ]);
+            $table = Datatables::of($query);
+
+            $table->setRowAttr([
+                'data-entry-id' => '{{$id}}',
+            ]);
+            $table->addColumn('massDelete', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+            $table->editColumn('actions', function ($row) use ($template) {
+                $gateKey  = 'provider_';
+                $routeKey = 'admin.providers';
+
+                return view($template, compact('row', 'gateKey', 'routeKey'));
+            });
+
+            $table->rawColumns(['actions','massDelete']);
+
+            return $table->make(true);
         }
 
-        return view('admin.providers.index', compact('providers'));
+        return view('admin.providers.index');
     }
 
     /**
@@ -115,11 +152,11 @@ class ProvidersController extends Controller
         if (! Gate::allows('provider_view')) {
             return abort(401);
         }
-        $invoices = \App\Invoice::where('provider_id', $id)->get();
+        $expenses = \App\Expense::where('provider_id', $id)->get();
 
         $provider = Provider::findOrFail($id);
 
-        return view('admin.providers.show', compact('provider', 'invoices'));
+        return view('admin.providers.show', compact('provider', 'expenses'));
     }
 
 

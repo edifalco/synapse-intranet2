@@ -23,9 +23,7 @@ class StoreExpensesRequest extends FormRequest
     public function rules()
     {
         return [
-            'expense_category_id' => 'required',
-            'entry_date' => 'required|date_format:'.config('app.date_format'),
-            'amount' => 'required',
+            'due_date' => 'nullable|date_format:'.config('app.date_format'),
         ];
     }
 }
