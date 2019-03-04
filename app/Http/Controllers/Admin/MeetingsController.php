@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMeetingsRequest;
 use App\Http\Requests\Admin\UpdateMeetingsRequest;
+use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class MeetingsController extends Controller
 {
     /**
@@ -23,16 +27,61 @@ class MeetingsController extends Controller
         }
 
 
-        if (request('show_deleted') == 1) {
-            if (! Gate::allows('meeting_delete')) {
-                return abort(401);
+        
+        if (request()->ajax()) {
+            $query = Meeting::query();
+            $query->with("project");
+            $query->with("status");
+            $template = 'actionsTemplate';
+            if(request('show_deleted') == 1) {
+                
+        if (! Gate::allows('meeting_delete')) {
+            return abort(401);
+        }
+                $query->onlyTrashed();
+                $template = 'restoreTemplate';
             }
-            $meetings = Meeting::onlyTrashed()->get();
-        } else {
-            $meetings = Meeting::all();
+            $query->select([
+                'meetings.id',
+                'meetings.name',
+                'meetings.city',
+                'meetings.start_date',
+                'meetings.end_date',
+                'meetings.project_id',
+                'meetings.status_id',
+            ]);
+            $table = Datatables::of($query);
+
+            $table->setRowAttr([
+                'data-entry-id' => '{{$id}}',
+            ]);
+            $table->addColumn('massDelete', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+            $table->editColumn('actions', function ($row) use ($template) {
+                $gateKey  = 'meeting_';
+                $routeKey = 'admin.meetings';
+
+                return view($template, compact('row', 'gateKey', 'routeKey'));
+            });
+            $table->editColumn('start_date', function ($row) {
+                return $row->start_date ? $row->start_date : '';
+            });
+            $table->editColumn('end_date', function ($row) {
+                return $row->end_date ? $row->end_date : '';
+            });
+            $table->editColumn('project.name', function ($row) {
+                return $row->project ? $row->project->name : '';
+            });
+            $table->editColumn('status.name', function ($row) {
+                return $row->status ? $row->status->name : '';
+            });
+
+            $table->rawColumns(['actions','massDelete']);
+
+            return $table->make(true);
         }
 
-        return view('admin.meetings.index', compact('meetings'));
+        return view('admin.meetings.index');
     }
 
     /**
@@ -125,11 +174,11 @@ class MeetingsController extends Controller
         }
         
         $projects = \App\Project::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$invoices = \App\Invoice::where('meeting_id', $id)->get();
+        $statuses = \App\Status::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$expenses = \App\Expense::where('meeting_id', $id)->get();
 
         $meeting = Meeting::findOrFail($id);
 
-        return view('admin.meetings.show', compact('meeting', 'invoices'));
+        return view('admin.meetings.show', compact('meeting', 'expenses'));
     }
 
 

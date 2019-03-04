@@ -16,7 +16,8 @@ class UserAction extends Model
 {
     protected $fillable = ['action', 'action_model', 'action_id', 'user_id'];
     protected $hidden = [];
-    
+    public static $searchable = [
+    ];
     
 
     /**

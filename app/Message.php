@@ -19,7 +19,8 @@ class Message extends Model
 
     protected $fillable = ['name', 'email', 'phone', 'message'];
     protected $hidden = [];
-    
+    public static $searchable = [
+    ];
     
     public static function boot()
     {

@@ -16,7 +16,8 @@ class Status extends Model
 
     protected $fillable = ['name'];
     protected $hidden = [];
-    
+    public static $searchable = [
+    ];
     
     public static function boot()
     {

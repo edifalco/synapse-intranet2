@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBudgetsRequest;
 use App\Http\Requests\Admin\UpdateBudgetsRequest;
+use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class BudgetsController extends Controller
 {
     /**
@@ -23,16 +27,60 @@ class BudgetsController extends Controller
         }
 
 
-        if (request('show_deleted') == 1) {
-            if (! Gate::allows('budget_delete')) {
-                return abort(401);
+        
+        if (request()->ajax()) {
+            $query = Budget::query();
+            $query->with("projects");
+            $query->with("category");
+            $query->with("year");
+            $template = 'actionsTemplate';
+            if(request('show_deleted') == 1) {
+                
+        if (! Gate::allows('budget_delete')) {
+            return abort(401);
+        }
+                $query->onlyTrashed();
+                $template = 'restoreTemplate';
             }
-            $budgets = Budget::onlyTrashed()->get();
-        } else {
-            $budgets = Budget::all();
+            $query->select([
+                'budgets.id',
+                'budgets.amount',
+                'budgets.projects_id',
+                'budgets.category_id',
+                'budgets.year_id',
+            ]);
+            $table = Datatables::of($query);
+
+            $table->setRowAttr([
+                'data-entry-id' => '{{$id}}',
+            ]);
+            $table->addColumn('massDelete', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+            $table->editColumn('actions', function ($row) use ($template) {
+                $gateKey  = 'budget_';
+                $routeKey = 'admin.budgets';
+
+                return view($template, compact('row', 'gateKey', 'routeKey'));
+            });
+            $table->editColumn('amount', function ($row) {
+                return $row->amount ? $row->amount : '';
+            });
+            $table->editColumn('projects.name', function ($row) {
+                return $row->projects ? $row->projects->name : '';
+            });
+            $table->editColumn('category.name', function ($row) {
+                return $row->category ? $row->category->name : '';
+            });
+            $table->editColumn('year.name', function ($row) {
+                return $row->year ? $row->year->name : '';
+            });
+
+            $table->rawColumns(['actions','massDelete']);
+
+            return $table->make(true);
         }
 
-        return view('admin.budgets.index', compact('budgets'));
+        return view('admin.budgets.index');
     }
 
     /**

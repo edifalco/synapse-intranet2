@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreContingenciesRequest;
 use App\Http\Requests\Admin\UpdateContingenciesRequest;
+use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class ContingenciesController extends Controller
 {
     /**
@@ -23,16 +27,42 @@ class ContingenciesController extends Controller
         }
 
 
-        if (request('show_deleted') == 1) {
-            if (! Gate::allows('contingency_delete')) {
-                return abort(401);
+        
+        if (request()->ajax()) {
+            $query = Contingency::query();
+            $template = 'actionsTemplate';
+            if(request('show_deleted') == 1) {
+                
+        if (! Gate::allows('contingency_delete')) {
+            return abort(401);
+        }
+                $query->onlyTrashed();
+                $template = 'restoreTemplate';
             }
-            $contingencies = Contingency::onlyTrashed()->get();
-        } else {
-            $contingencies = Contingency::all();
+            $query->select([
+                'contingencies.id',
+                'contingencies.name',
+            ]);
+            $table = Datatables::of($query);
+
+            $table->setRowAttr([
+                'data-entry-id' => '{{$id}}',
+            ]);
+            $table->addColumn('massDelete', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+            $table->editColumn('actions', function ($row) use ($template) {
+                $gateKey  = 'contingency_';
+                $routeKey = 'admin.contingencies';
+
+                return view($template, compact('row', 'gateKey', 'routeKey'));
+            });
+
+            $table->rawColumns(['actions','massDelete']);
+
+            return $table->make(true);
         }
 
-        return view('admin.contingencies.index', compact('contingencies'));
+        return view('admin.contingencies.index');
     }
 
     /**
@@ -115,11 +145,11 @@ class ContingenciesController extends Controller
         if (! Gate::allows('contingency_view')) {
             return abort(401);
         }
-        $invoices = \App\Invoice::where('contingency_id', $id)->get();
+        $expenses = \App\Expense::where('contingency_id', $id)->get();
 
         $contingency = Contingency::findOrFail($id);
 
-        return view('admin.contingencies.show', compact('contingency', 'invoices'));
+        return view('admin.contingencies.show', compact('contingency', 'expenses'));
     }
 
 
