@@ -18,5 +18,11 @@ class ServiceType extends Model
     protected $hidden = [];
     
     
+    public static function boot()
+    {
+        parent::boot();
+
+        ServiceType::observe(new \App\Observers\UserActionsObserver);
+    }
     
 }

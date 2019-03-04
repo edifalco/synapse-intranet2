@@ -18,5 +18,11 @@ class Category extends Model
     protected $hidden = [];
     
     
+    public static function boot()
+    {
+        parent::boot();
+
+        Category::observe(new \App\Observers\UserActionsObserver);
+    }
     
 }

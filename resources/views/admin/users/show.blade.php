@@ -34,6 +34,9 @@
 <ul class="nav nav-tabs" role="tablist">
     
 <li role="presentation" class="active"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
+<li role="presentation" class=""><a href="#user_actions" aria-controls="user_actions" role="tab" data-toggle="tab">User actions</a></li>
+<li role="presentation" class=""><a href="#internal_notifications" aria-controls="internal_notifications" role="tab" data-toggle="tab">Notifications</a></li>
+<li role="presentation" class=""><a href="#tasks" aria-controls="tasks" role="tab" data-toggle="tab">Tasks</a></li>
 <li role="presentation" class=""><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
 <li role="presentation" class=""><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
 </ul>
@@ -122,6 +125,149 @@
         @else
             <tr>
                 <td colspan="27">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="user_actions">
+<table class="table table-bordered table-striped {{ count($user_actions) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.user-actions.created_at')</th>
+                        <th>@lang('global.user-actions.fields.user')</th>
+                        <th>@lang('global.user-actions.fields.action')</th>
+                        <th>@lang('global.user-actions.fields.action-model')</th>
+                        <th>@lang('global.user-actions.fields.action-id')</th>
+                        
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($user_actions) > 0)
+            @foreach ($user_actions as $user_action)
+                <tr data-entry-id="{{ $user_action->id }}">
+                    <td>{{ $user_action->created_at ?? '' }}</td>
+                                <td field-key='user'>{{ $user_action->user->name ?? '' }}</td>
+                                <td field-key='action'>{{ $user_action->action }}</td>
+                                <td field-key='action_model'>{{ $user_action->action_model }}</td>
+                                <td field-key='action_id'>{{ $user_action->action_id }}</td>
+                                
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="7">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="internal_notifications">
+<table class="table table-bordered table-striped {{ count($internal_notifications) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.internal-notifications.fields.text')</th>
+                        <th>@lang('global.internal-notifications.fields.link')</th>
+                        <th>@lang('global.internal-notifications.fields.users')</th>
+                                                <th>&nbsp;</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($internal_notifications) > 0)
+            @foreach ($internal_notifications as $internal_notification)
+                <tr data-entry-id="{{ $internal_notification->id }}">
+                    <td field-key='text'>{{ $internal_notification->text }}</td>
+                                <td field-key='link'>{{ $internal_notification->link }}</td>
+                                <td field-key='users'>
+                                    @foreach ($internal_notification->users as $singleUsers)
+                                        <span class="label label-info label-many">{{ $singleUsers->name }}</span>
+                                    @endforeach
+                                </td>
+                                                                <td>
+                                    @can('internal_notification_view')
+                                    <a href="{{ route('admin.internal_notifications.show',[$internal_notification->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('internal_notification_edit')
+                                    <a href="{{ route('admin.internal_notifications.edit',[$internal_notification->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('internal_notification_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.internal_notifications.destroy', $internal_notification->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="8">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="tasks">
+<table class="table table-bordered table-striped {{ count($tasks) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.tasks.fields.name')</th>
+                        <th>@lang('global.tasks.fields.description')</th>
+                        <th>@lang('global.tasks.fields.status')</th>
+                        <th>@lang('global.tasks.fields.tag')</th>
+                        <th>@lang('global.tasks.fields.attachment')</th>
+                        <th>@lang('global.tasks.fields.due-date')</th>
+                        <th>@lang('global.tasks.fields.user')</th>
+                                                <th>&nbsp;</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($tasks) > 0)
+            @foreach ($tasks as $task)
+                <tr data-entry-id="{{ $task->id }}">
+                    <td field-key='name'>{{ $task->name }}</td>
+                                <td field-key='description'>{!! $task->description !!}</td>
+                                <td field-key='status'>{{ $task->status->name ?? '' }}</td>
+                                <td field-key='tag'>
+                                    @foreach ($task->tag as $singleTag)
+                                        <span class="label label-info label-many">{{ $singleTag->name }}</span>
+                                    @endforeach
+                                </td>
+                                <td field-key='attachment'>@if($task->attachment)<a href="{{ asset(env('UPLOAD_PATH').'/' . $task->attachment) }}" target="_blank">Download file</a>@endif</td>
+                                <td field-key='due_date'>{{ $task->due_date }}</td>
+                                <td field-key='user'>{{ $task->user->name ?? '' }}</td>
+                                                                <td>
+                                    @can('task_view')
+                                    <a href="{{ route('admin.tasks.show',[$task->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('task_edit')
+                                    <a href="{{ route('admin.tasks.edit',[$task->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('task_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.tasks.destroy', $task->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="12">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
