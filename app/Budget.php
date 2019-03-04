@@ -19,7 +19,8 @@ class Budget extends Model
 
     protected $fillable = ['amount', 'projects_id', 'category_id', 'year_id'];
     protected $hidden = [];
-    
+    public static $searchable = [
+    ];
     
     public static function boot()
     {

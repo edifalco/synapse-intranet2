@@ -9,9 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreExpenseCategoriesRequest;
 use App\Http\Requests\Admin\UpdateExpenseCategoriesRequest;
 
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 class ExpenseCategoriesController extends Controller
 {
     /**
@@ -111,11 +108,9 @@ class ExpenseCategoriesController extends Controller
         if (! Gate::allows('expense_category_view')) {
             return abort(401);
         }
-        $expenses = \App\Expense::where('expense_category_id', $id)->get();
-
         $expense_category = ExpenseCategory::findOrFail($id);
 
-        return view('admin.expense_categories.show', compact('expense_category', 'expenses'));
+        return view('admin.expense_categories.show', compact('expense_category'));
     }
 
 

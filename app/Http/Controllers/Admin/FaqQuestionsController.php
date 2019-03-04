@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreFaqQuestionsRequest;
 use App\Http\Requests\Admin\UpdateFaqQuestionsRequest;
+use Yajra\DataTables\DataTables;
 
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -26,9 +27,41 @@ class FaqQuestionsController extends Controller
         }
 
 
-                $faq_questions = FaqQuestion::all();
+        
+        if (request()->ajax()) {
+            $query = FaqQuestion::query();
+            $query->with("category");
+            $template = 'actionsTemplate';
+            
+            $query->select([
+                'faq_questions.id',
+                'faq_questions.category_id',
+                'faq_questions.question_text',
+                'faq_questions.answer_text',
+            ]);
+            $table = Datatables::of($query);
 
-        return view('admin.faq_questions.index', compact('faq_questions'));
+            $table->setRowAttr([
+                'data-entry-id' => '{{$id}}',
+            ]);
+            $table->addColumn('massDelete', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+            $table->editColumn('actions', function ($row) use ($template) {
+                $gateKey  = 'faq_question_';
+                $routeKey = 'admin.faq_questions';
+
+                return view($template, compact('row', 'gateKey', 'routeKey'));
+            });
+            $table->editColumn('category.title', function ($row) {
+                return $row->category ? $row->category->title : '';
+            });
+
+            $table->rawColumns(['actions','massDelete']);
+
+            return $table->make(true);
+        }
+
+        return view('admin.faq_questions.index');
     }
 
     /**

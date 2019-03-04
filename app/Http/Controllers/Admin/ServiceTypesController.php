@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreServiceTypesRequest;
 use App\Http\Requests\Admin\UpdateServiceTypesRequest;
+use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class ServiceTypesController extends Controller
 {
     /**
@@ -23,16 +27,42 @@ class ServiceTypesController extends Controller
         }
 
 
-        if (request('show_deleted') == 1) {
-            if (! Gate::allows('service_type_delete')) {
-                return abort(401);
+        
+        if (request()->ajax()) {
+            $query = ServiceType::query();
+            $template = 'actionsTemplate';
+            if(request('show_deleted') == 1) {
+                
+        if (! Gate::allows('service_type_delete')) {
+            return abort(401);
+        }
+                $query->onlyTrashed();
+                $template = 'restoreTemplate';
             }
-            $service_types = ServiceType::onlyTrashed()->get();
-        } else {
-            $service_types = ServiceType::all();
+            $query->select([
+                'service_types.id',
+                'service_types.name',
+            ]);
+            $table = Datatables::of($query);
+
+            $table->setRowAttr([
+                'data-entry-id' => '{{$id}}',
+            ]);
+            $table->addColumn('massDelete', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+            $table->editColumn('actions', function ($row) use ($template) {
+                $gateKey  = 'service_type_';
+                $routeKey = 'admin.service_types';
+
+                return view($template, compact('row', 'gateKey', 'routeKey'));
+            });
+
+            $table->rawColumns(['actions','massDelete']);
+
+            return $table->make(true);
         }
 
-        return view('admin.service_types.index', compact('service_types'));
+        return view('admin.service_types.index');
     }
 
     /**
@@ -115,11 +145,11 @@ class ServiceTypesController extends Controller
         if (! Gate::allows('service_type_view')) {
             return abort(401);
         }
-        $invoices = \App\Invoice::where('service_type_id', $id)->get();
+        $expenses = \App\Expense::where('service_type_id', $id)->get();
 
         $service_type = ServiceType::findOrFail($id);
 
-        return view('admin.service_types.show', compact('service_type', 'invoices'));
+        return view('admin.service_types.show', compact('service_type', 'expenses'));
     }
 
 

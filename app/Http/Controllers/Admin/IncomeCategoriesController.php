@@ -55,7 +55,7 @@ class IncomeCategoriesController extends Controller
         if (! Gate::allows('income_category_create')) {
             return abort(401);
         }
-        $income_category = IncomeCategory::create($request->all());
+        $income_category = IncomeCategory::create([]);
 
 
 
@@ -92,7 +92,7 @@ class IncomeCategoriesController extends Controller
             return abort(401);
         }
         $income_category = IncomeCategory::findOrFail($id);
-        $income_category->update($request->all());
+        $income_category->touch();
 
 
 
@@ -111,11 +111,9 @@ class IncomeCategoriesController extends Controller
         if (! Gate::allows('income_category_view')) {
             return abort(401);
         }
-        $incomes = \App\Income::where('income_category_id', $id)->get();
-
         $income_category = IncomeCategory::findOrFail($id);
 
-        return view('admin.income_categories.show', compact('income_category', 'incomes'));
+        return view('admin.income_categories.show', compact('income_category'));
     }
 
 

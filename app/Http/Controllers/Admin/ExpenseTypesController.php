@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreExpenseTypesRequest;
 use App\Http\Requests\Admin\UpdateExpenseTypesRequest;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class ExpenseTypesController extends Controller
 {
     /**
@@ -115,11 +118,11 @@ class ExpenseTypesController extends Controller
         if (! Gate::allows('expense_type_view')) {
             return abort(401);
         }
-        $invoices = \App\Invoice::where('expense_type_id', $id)->get();
+        $expenses = \App\Expense::where('expense_type_id', $id)->get();
 
         $expense_type = ExpenseType::findOrFail($id);
 
-        return view('admin.expense_types.show', compact('expense_type', 'invoices'));
+        return view('admin.expense_types.show', compact('expense_type', 'expenses'));
     }
 
 

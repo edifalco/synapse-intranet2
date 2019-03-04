@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreYearsRequest;
 use App\Http\Requests\Admin\UpdateYearsRequest;
+use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class YearsController extends Controller
 {
     /**
@@ -23,16 +27,42 @@ class YearsController extends Controller
         }
 
 
-        if (request('show_deleted') == 1) {
-            if (! Gate::allows('year_delete')) {
-                return abort(401);
+        
+        if (request()->ajax()) {
+            $query = Year::query();
+            $template = 'actionsTemplate';
+            if(request('show_deleted') == 1) {
+                
+        if (! Gate::allows('year_delete')) {
+            return abort(401);
+        }
+                $query->onlyTrashed();
+                $template = 'restoreTemplate';
             }
-            $years = Year::onlyTrashed()->get();
-        } else {
-            $years = Year::all();
+            $query->select([
+                'years.id',
+                'years.name',
+            ]);
+            $table = Datatables::of($query);
+
+            $table->setRowAttr([
+                'data-entry-id' => '{{$id}}',
+            ]);
+            $table->addColumn('massDelete', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+            $table->editColumn('actions', function ($row) use ($template) {
+                $gateKey  = 'year_';
+                $routeKey = 'admin.years';
+
+                return view($template, compact('row', 'gateKey', 'routeKey'));
+            });
+
+            $table->rawColumns(['actions','massDelete']);
+
+            return $table->make(true);
         }
 
-        return view('admin.years.index', compact('years'));
+        return view('admin.years.index');
     }
 
     /**

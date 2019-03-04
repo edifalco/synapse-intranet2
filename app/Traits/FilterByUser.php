@@ -20,7 +20,7 @@ trait FilterByUser
             $canSeeAllRecordsRoleId = config('app_service.can_see_all_records_role_id');
             $modelName = class_basename(self::class);
 
-            if (!is_null($canSeeAllRecordsRoleId) && in_array($canSeeAllRecordsRoleId, $currentUser->role->pluck('id')->toArray()) ) {
+            if (!is_null($canSeeAllRecordsRoleId) && $currentUser->role_id == $canSeeAllRecordsRoleId) {
                 if (Session::get($modelName . '.filter', 'all') == 'my') {
                     Session::put($modelName . '.filter', 'my');
                     $addScope = true;

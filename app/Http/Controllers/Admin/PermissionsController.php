@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StorePermissionsRequest;
 use App\Http\Requests\Admin\UpdatePermissionsRequest;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class PermissionsController extends Controller
 {
     /**
@@ -18,6 +21,9 @@ class PermissionsController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('permission_access')) {
+            return abort(401);
+        }
 
 
                 $permissions = Permission::all();
@@ -32,6 +38,9 @@ class PermissionsController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('permission_create')) {
+            return abort(401);
+        }
         return view('admin.permissions.create');
     }
 
@@ -43,6 +52,9 @@ class PermissionsController extends Controller
      */
     public function store(StorePermissionsRequest $request)
     {
+        if (! Gate::allows('permission_create')) {
+            return abort(401);
+        }
         $permission = Permission::create($request->all());
 
 
@@ -59,6 +71,9 @@ class PermissionsController extends Controller
      */
     public function edit($id)
     {
+        if (! Gate::allows('permission_edit')) {
+            return abort(401);
+        }
         $permission = Permission::findOrFail($id);
 
         return view('admin.permissions.edit', compact('permission'));
@@ -73,6 +88,9 @@ class PermissionsController extends Controller
      */
     public function update(UpdatePermissionsRequest $request, $id)
     {
+        if (! Gate::allows('permission_edit')) {
+            return abort(401);
+        }
         $permission = Permission::findOrFail($id);
         $permission->update($request->all());
 
@@ -90,6 +108,9 @@ class PermissionsController extends Controller
      */
     public function show($id)
     {
+        if (! Gate::allows('permission_view')) {
+            return abort(401);
+        }
         $roles = \App\Role::whereHas('permission',
                     function ($query) use ($id) {
                         $query->where('id', $id);
@@ -109,6 +130,9 @@ class PermissionsController extends Controller
      */
     public function destroy($id)
     {
+        if (! Gate::allows('permission_delete')) {
+            return abort(401);
+        }
         $permission = Permission::findOrFail($id);
         $permission->delete();
 
@@ -122,6 +146,9 @@ class PermissionsController extends Controller
      */
     public function massDestroy(Request $request)
     {
+        if (! Gate::allows('permission_delete')) {
+            return abort(401);
+        }
         if ($request->input('ids')) {
             $entries = Permission::whereIn('id', $request->input('ids'))->get();
 
