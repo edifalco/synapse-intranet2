@@ -10,7 +10,10 @@
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.7",
-        "spatie/laravel-medialibrary": "^7.0.0"
+        "yajra/laravel-datatables-oracle": "~8.0",
+        "unisharp/laravel-filemanager": "^1.8",
+        "spatie/laravel-medialibrary": "^7.0.0",
+        "nuovo/spreadsheet-reader": "^0.5.11"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

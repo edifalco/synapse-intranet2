@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUsersRequest;
 use App\Http\Requests\Admin\UpdateUsersRequest;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class UsersController extends Controller
 {
     /**
@@ -120,11 +123,14 @@ class UsersController extends Controller
         }
         
         $roles = \App\Role::get()->pluck('title', 'id');
-$invoices = \App\Invoice::where('user_id', $id)->get();$invoices = \App\Invoice::where('pm_id', $id)->get();$invoices = \App\Invoice::where('finance_id', $id)->get();
+$invoices = \App\Invoice::where('user_id', $id)->get();$user_actions = \App\UserAction::where('user_id', $id)->get();$internal_notifications = \App\InternalNotification::whereHas('users',
+                    function ($query) use ($id) {
+                        $query->where('id', $id);
+                    })->get();$tasks = \App\Task::where('user_id', $id)->get();$invoices = \App\Invoice::where('pm_id', $id)->get();$invoices = \App\Invoice::where('finance_id', $id)->get();
 
         $user = User::findOrFail($id);
 
-        return view('admin.users.show', compact('user', 'invoices', 'invoices', 'invoices'));
+        return view('admin.users.show', compact('user', 'invoices', 'user_actions', 'internal_notifications', 'tasks', 'invoices', 'invoices'));
     }
 
 

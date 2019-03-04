@@ -5,21 +5,61 @@ return [
 		'permissions' => [		'title' => 'Permissions',		'fields' => [			'title' => 'Title',		],	],
 		'roles' => [		'title' => 'Roles',		'fields' => [			'title' => 'Title',			'permission' => 'Permissions',		],	],
 		'users' => [		'title' => 'Users',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'password' => 'Password',			'role' => 'Role',			'remember-token' => 'Remember token',		],	],
-		'budgets' => [		'title' => 'Budgets',		'fields' => [		],	],
-		'categories' => [		'title' => 'Categories',		'fields' => [			'name' => 'Name',		],	],
-		'contingencies' => [		'title' => 'Contingencies',		'fields' => [			'name' => 'Name',		],	],
-		'expense-types' => [		'title' => 'Expense types',		'fields' => [			'name' => 'Name',		],	],
-		'invoices' => [		'title' => 'Invoices',		'fields' => [			'user' => 'Requester',			'project' => 'Project',			'expense-type' => 'Expense type',			'meeting' => 'Meeting',			'contingency' => 'Contingency',			'date' => 'Date',			'due-date' => 'Due date',			'invoice-subtotal' => 'Invoice subtotal',			'invoice-taxes' => 'Invoice taxes',			'invoice-total' => 'Invoice total',			'budget-subtotal' => 'Budget subtotal',			'budget-taxes' => 'Budget taxes',			'budget-total' => 'Budget total',			'provider' => 'Provider',			'service-type' => 'Service type',			'service' => 'Service',			'selection-criteria' => 'Selection criteria',			'pm' => 'PM',			'pm-approval-date' => 'PM approval date',			'finance' => 'Finance resposible',			'finance-approval-date' => 'Finance approval date',			'files' => 'Files',		],	],
-		'media' => [		'title' => 'Media',		'fields' => [		],	],
-		'meetings' => [		'title' => 'Meetings',		'fields' => [			'name' => 'Name',			'city' => 'City',			'start-date' => 'Start date',			'end-date' => 'End date',			'project' => 'Project',			'status' => 'Status',		],	],
-		'messages' => [		'title' => 'Messages',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'phone' => 'Phone',			'message' => 'Message',		],	],
-		'projects' => [		'title' => 'Projects',		'fields' => [			'name' => 'Name',			'start-date' => 'Start date',			'end-date' => 'End date',			'logo' => 'Logo',			'status' => 'Status',		],	],
-		'providers' => [		'title' => 'Providers',		'fields' => [			'name' => 'Name',			'address' => 'Address',			'postal-code' => 'Postal code',			'city' => 'City',			'country' => 'Country',			'phone' => 'Phone',			'contact-person' => 'Contact person',			'email' => 'Email',		],	],
-		'service-types' => [		'title' => 'Service types',		'fields' => [			'name' => 'Name',		],	],
+		'invoice-management' => [		'title' => 'Invoice management',		'fields' => [		],	],
 		'statuses' => [		'title' => 'Statuses',		'fields' => [			'name' => 'Name',		],	],
 		'years' => [		'title' => 'Years',		'fields' => [			'name' => 'Name',		],	],
-		'invoice-management' => [		'title' => 'Invoice management',		'fields' => [		],	],
+		'service-types' => [		'title' => 'Service types',		'fields' => [			'name' => 'Name',		],	],
+		'expense-types' => [		'title' => 'Expense types',		'fields' => [			'name' => 'Name',		],	],
+		'contingencies' => [		'title' => 'Contingencies',		'fields' => [			'name' => 'Name',		],	],
+		'categories' => [		'title' => 'Categories',		'fields' => [			'name' => 'Name',		],	],
+		'providers' => [		'title' => 'Providers',		'fields' => [			'name' => 'Name',			'address' => 'Address',			'postal-code' => 'Postal code',			'city' => 'City',			'country' => 'Country',			'phone' => 'Phone',			'contact-person' => 'Contact person',			'email' => 'Email',		],	],
+		'invoices' => [		'title' => 'Invoices',		'fields' => [			'user' => 'Requester',			'project' => 'Project',			'expense-type' => 'Expense type',			'meeting' => 'Meeting',			'contingency' => 'Contingency',			'date' => 'Date',			'due-date' => 'Due date',			'invoice-subtotal' => 'Invoice subtotal',			'invoice-taxes' => 'Invoice taxes',			'invoice-total' => 'Invoice total',			'budget-subtotal' => 'Budget subtotal',			'budget-taxes' => 'Budget taxes',			'budget-total' => 'Budget total',			'provider' => 'Provider',			'service-type' => 'Service type',			'service' => 'Service',			'selection-criteria' => 'Selection criteria',			'pm' => 'PM',			'pm-approval-date' => 'PM approval date',			'finance' => 'Finance resposible',			'finance-approval-date' => 'Finance approval date',			'files' => 'Files',		],	],
 		'budgets' => [		'title' => 'Budgets',		'fields' => [			'amount' => 'Amount',			'projects' => 'Projects',			'category' => 'Category',			'year' => 'Year',		],	],
+		'meetings' => [		'title' => 'Meetings',		'fields' => [			'name' => 'Name',			'city' => 'City',			'start-date' => 'Start date',			'end-date' => 'End date',			'project' => 'Project',			'status' => 'Status',		],	],
+		'projects' => [		'title' => 'Projects',		'fields' => [			'name' => 'Name',			'start-date' => 'Start date',			'end-date' => 'End date',			'logo' => 'Logo',			'status' => 'Status',		],	],
+		'messages' => [		'title' => 'Messages',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'phone' => 'Phone',			'message' => 'Message',		],	],
+		'user-actions' => [		'title' => 'User actions',		'created_at' => 'Time',		'fields' => [			'user' => 'User',			'action' => 'Action',			'action-model' => 'Action model',			'action-id' => 'Action id',		],	],
+		'internal-notifications' => [		'title' => 'Notifications',		'fields' => [			'text' => 'Text',			'link' => 'Link',			'users' => 'Users',		],	],
+		'faq-management' => [		'title' => 'FAQ Management',		'fields' => [		],	],
+		'faq-categories' => [		'title' => 'Categories',		'fields' => [			'title' => 'Category',		],	],
+		'faq-questions' => [		'title' => 'Questions',		'fields' => [			'category' => 'Category',			'question-text' => 'Question',			'answer-text' => 'Answer',		],	],
+		'content-management' => [		'title' => 'Content management',		'fields' => [		],	],
+		'content-categories' => [		'title' => 'Categories',		'fields' => [			'title' => 'Category',			'slug' => 'Slug',		],	],
+		'content-tags' => [		'title' => 'Tags',		'fields' => [			'title' => 'Tag',			'slug' => 'Slug',		],	],
+		'content-pages' => [		'title' => 'Pages',		'fields' => [			'title' => 'Title',			'category-id' => 'Categories',			'tag-id' => 'Tags',			'page-text' => 'Text',			'excerpt' => 'Excerpt',			'featured-image' => 'Featured image',		],	],
+		'client-management' => [		'title' => 'Client management',		'fields' => [		],	],
+		'client-management-settings' => [		'title' => 'Client management settings',		'fields' => [		],	],
+		'client-currencies' => [		'title' => 'Currencies',		'fields' => [			'title' => 'Title',			'code' => 'Code',			'main-currency' => 'Main currency',		],	],
+		'client-transaction-types' => [		'title' => 'Transaction types',		'fields' => [			'title' => 'Title',		],	],
+		'client-income-sources' => [		'title' => 'Income sources',		'fields' => [			'title' => 'Title',			'fee-percent' => 'Fee percent',		],	],
+		'client-statuses' => [		'title' => 'Client statuses',		'fields' => [			'title' => 'Title',		],	],
+		'client-project-statuses' => [		'title' => 'Project statuses',		'fields' => [			'title' => 'Title',		],	],
+		'clients' => [		'title' => 'Clients',		'fields' => [			'first-name' => 'First name',			'last-name' => 'Last name',			'company-name' => 'Company',			'email' => 'Email',			'phone' => 'Phone',			'website' => 'Website',			'skype' => 'Skype',			'country' => 'Country',			'client-status' => 'Client status',		],	],
+		'client-projects' => [		'title' => 'Projects',		'fields' => [			'title' => 'Title',			'client' => 'Client',			'description' => 'Description',			'date' => 'Start date',			'budget' => 'Budget',			'project-status' => 'Project status',		],	],
+		'basic-crm' => [		'title' => 'Basic CRM',		'fields' => [		],	],
+		'crm-statuses' => [		'title' => 'Statuses',		'fields' => [			'title' => 'Title',		],	],
+		'crm-customers' => [		'title' => 'Customers',		'fields' => [			'first-name' => 'First name',			'last-name' => 'Last name',			'crm-status' => 'Status',			'email' => 'Email',			'phone' => 'Phone',			'address' => 'Address',			'skype' => 'Skype',			'website' => 'Website',			'description' => 'Description',		],	],
+		'crm-notes' => [		'title' => 'Notes',		'fields' => [			'customer' => 'Customer',			'note' => 'Notes',		],	],
+		'crm-documents' => [		'title' => 'Documents',		'fields' => [			'customer' => 'Customer',			'name' => 'Title',			'description' => 'Description',			'file' => 'File',		],	],
+		'contact-management' => [		'title' => 'Contact management',		'fields' => [		],	],
+		'contact-companies' => [		'title' => 'Companies',		'fields' => [			'name' => 'Company name',			'address' => 'Address',			'website' => 'Website',			'email' => 'Email',		],	],
+		'contacts' => [		'title' => 'Contacts',		'fields' => [			'company' => 'Company',			'first-name' => 'First name',			'last-name' => 'Last name',			'phone1' => 'Phone 1',			'phone2' => 'Phone 2',			'email' => 'Email',			'skype' => 'Skype',			'address' => 'Address',		],	],
+		'expense-management' => [		'title' => 'Expense Management',		'fields' => [		],	],
+		'expense-category' => [		'title' => 'Expense Categories',		'fields' => [			'name' => 'Name',		],	],
+		'income-category' => [		'title' => 'Income categories',		'fields' => [			'name' => 'Name',		],	],
+		'income' => [		'title' => 'Income',		'fields' => [			'income-category' => 'Income Category',			'entry-date' => 'Entry date',			'amount' => 'Amount',		],	],
+		'expense' => [		'title' => 'Expenses',		'fields' => [			'expense-category' => 'Expense Category',			'entry-date' => 'Entry date',			'amount' => 'Amount',		],	],
+		'monthly-report' => [		'title' => 'Monthly report',		'fields' => [		],	],
+		'time-management' => [		'title' => 'Time management',		'fields' => [		],	],
+		'time-work-types' => [		'title' => 'Work types',		'fields' => [			'name' => 'Name',		],	],
+		'time-projects' => [		'title' => 'Projects',		'fields' => [			'name' => 'Name',		],	],
+		'time-entries' => [		'title' => 'Time entries',		'fields' => [			'work-type' => 'Work type',			'project' => 'Project',			'start-time' => 'Start time',			'end-time' => 'End time',		],	],
+		'time-reports' => [		'title' => 'Reports',		'fields' => [		],	],
+		'task-management' => [		'title' => 'Task management',		'fields' => [		],	],
+		'task-statuses' => [		'title' => 'Statuses',		'fields' => [			'name' => 'Name',		],	],
+		'task-tags' => [		'title' => 'Tags',		'fields' => [			'name' => 'Name',		],	],
+		'tasks' => [		'title' => 'Tasks',		'fields' => [			'name' => 'Name',			'description' => 'Description',			'status' => 'Status',			'tag' => 'Tags',			'attachment' => 'Attachment',			'due-date' => 'Due date',			'user' => 'Assigned to',		],	],
+		'task-calendar' => [		'title' => 'Calendar',		'fields' => [		],	],
 	'app_create' => 'Create',
 	'app_save' => 'Save',
 	'app_edit' => 'Edit',
@@ -264,5 +304,5 @@ return [
 	'app_deselect_all' => 'Deselect all',
 	'app_team-management' => 'Teams',
 	'app_team-management-singular' => 'Team',
-	'global_title' => 'synapse intranet 3',
+	'global_title' => 'synapse intranet 3.2',
 ];

@@ -18,9 +18,6 @@ class RolesController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('role_access')) {
-            return abort(401);
-        }
 
 
                 $roles = Role::all();
@@ -35,9 +32,6 @@ class RolesController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('role_create')) {
-            return abort(401);
-        }
         
         $permissions = \App\Permission::get()->pluck('title', 'id');
 
@@ -53,9 +47,6 @@ class RolesController extends Controller
      */
     public function store(StoreRolesRequest $request)
     {
-        if (! Gate::allows('role_create')) {
-            return abort(401);
-        }
         $role = Role::create($request->all());
         $role->permission()->sync(array_filter((array)$request->input('permission')));
 
@@ -73,9 +64,6 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        if (! Gate::allows('role_edit')) {
-            return abort(401);
-        }
         
         $permissions = \App\Permission::get()->pluck('title', 'id');
 
@@ -94,9 +82,6 @@ class RolesController extends Controller
      */
     public function update(UpdateRolesRequest $request, $id)
     {
-        if (! Gate::allows('role_edit')) {
-            return abort(401);
-        }
         $role = Role::findOrFail($id);
         $role->update($request->all());
         $role->permission()->sync(array_filter((array)$request->input('permission')));
@@ -115,9 +100,6 @@ class RolesController extends Controller
      */
     public function show($id)
     {
-        if (! Gate::allows('role_view')) {
-            return abort(401);
-        }
         
         $permissions = \App\Permission::get()->pluck('title', 'id');
 $users = \App\User::whereHas('role',
@@ -139,9 +121,6 @@ $users = \App\User::whereHas('role',
      */
     public function destroy($id)
     {
-        if (! Gate::allows('role_delete')) {
-            return abort(401);
-        }
         $role = Role::findOrFail($id);
         $role->delete();
 
@@ -155,9 +134,6 @@ $users = \App\User::whereHas('role',
      */
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('role_delete')) {
-            return abort(401);
-        }
         if ($request->input('ids')) {
             $entries = Role::whereIn('id', $request->input('ids'))->get();
 

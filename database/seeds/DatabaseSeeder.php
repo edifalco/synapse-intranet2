@@ -12,10 +12,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         
+        $this->call(ContentPageSeed::class);
+        $this->call(CrmStatusSeed::class);
+        $this->call(FaqCategorySeed::class);
+        $this->call(FaqQuestionSeed::class);
         $this->call(PermissionSeed::class);
         $this->call(RoleSeed::class);
+        $this->call(TaskStatusSeed::class);
         $this->call(UserSeed::class);
-        $this->call(InvoiceSeed::class);
         $this->call(RoleSeedPivot::class);
         $this->call(UserSeedPivot::class);
 

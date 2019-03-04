@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Synapse intranet 3',
+    'name' => 'Synapse intranet 3.2',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,6 +166,8 @@ return [
         /*
          * Package Service Providers...
          */
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         
 
@@ -229,6 +231,12 @@ return [
         
     ],
 
-    
+    'languages' => [
+        'en' => 'English',
+        'es' => 'Spanish',
+        'de' => 'German',
+        'fr' => 'French',
+        'it' => 'Italian',
+    ],
 
 ];
